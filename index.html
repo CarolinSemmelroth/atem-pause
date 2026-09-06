@@ -1,986 +1,320 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deine ATEM-PAUSE – Somatische Übungen für Ruhe & Kraft</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #7A8E8A;
-            --accent: #C5A55C;
-            --secondary: #B8949E;
-            --text: #5A6B68;
-            --light: #F5F3F0;
-            --white: #FFFFFF;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* STARTSEITE */
-        .startseite {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .startseite-text h1 {
-            font-size: 3.5rem;
-            color: var(--text);
-            font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-
-        .startseite-text h2 {
-            font-size: 1.3rem;
-            color: var(--primary);
-            font-weight: 400;
-            margin-bottom: 30px;
-        }
-
-        .startseite-text p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            color: var(--text);
-            line-height: 1.8;
-        }
-
-        .hinweise {
-            background-color: var(--white);
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .hinweis-item {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .hinweis-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .hinweis-item span {
-            font-size: 1.5rem;
-            min-width: 30px;
-        }
-
-        .startseite-image {
-            text-align: center;
-        }
-
-        .startseite-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background-color: #6a7e7a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(122, 142, 138, 0.3);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        /* ÜBUNGSSEITE */
-        .exercise-page {
-            display: none;
-        }
-
-        .exercise-page.active {
-            display: block;
-        }
-
-        .exercise-header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: flex-start;
-            margin-bottom: 40px;
-        }
-
-        .exercise-info {
-            padding-right: 40px;
-        }
-
-        .exercise-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-
-        .meta-item {
-            background-color: var(--white);
-            padding: 10px 16px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .exercise-title {
-            font-size: 2.5rem;
-            color: var(--text);
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.2;
-        }
-
-        .exercise-category {
-            font-size: 0.85rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .emotional-opener {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            font-style: italic;
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: rgba(185, 148, 158, 0.1);
-            border-left: 3px solid var(--secondary);
-            border-radius: 4px;
-        }
-
-        .good-for {
-            margin-bottom: 30px;
-        }
-
-        .good-for-title {
-            font-size: 0.9rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tag {
-            background-color: var(--white);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .symbols {
-            display: flex;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .symbol {
-            font-size: 1.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: var(--white);
-            border-radius: 50%;
-            border: 2px solid var(--primary);
-        }
-
-        .exercise-image {
-            text-align: center;
-        }
-
-        .exercise-image img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* SCHRITTE */
-        .steps {
-            margin: 50px 0;
-            padding: 40px;
-            background-color: var(--white);
-            border-radius: 12px;
-        }
-
-        .steps-title {
-            font-size: 1.2rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 30px;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .step {
-            text-align: center;
-        }
-
-        .step-number {
-            width: 45px;
-            height: 45px;
-            background-color: var(--secondary);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin: 0 auto 15px;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            color: var(--text);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .step-description {
-            font-size: 0.85rem;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        /* REFLEXION & ANKERSATZ */
-        .reflection-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .reflection-box, .anchor-box {
-            padding: 30px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .reflection-box {
-            background-color: #E8F0ED;
-            border-left: 4px solid var(--primary);
-        }
-
-        .anchor-box {
-            background-color: #F0E8ED;
-            border-left: 4px solid var(--secondary);
-        }
-
-        .reflection-icon, .anchor-icon {
-            font-size: 2.5rem;
-        }
-
-        .reflection-content, .anchor-content {
-            flex: 1;
-        }
-
-        .reflection-title, .anchor-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .anchor-title {
-            color: var(--secondary);
-        }
-
-        .reflection-text, .anchor-text {
-            font-size: 0.95rem;
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        .anchor-text {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        /* NAVIGATION */
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid #E0E0E0;
-        }
-
-        .nav-button {
-            padding: 12px 24px;
-            background-color: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .nav-button:hover:not(:disabled) {
-            background-color: #6a7e7a;
-        }
-
-        .nav-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .nav-counter {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* GEFÜHLSWELTEN FILTER */
-        .filter-section {
-            margin: 40px 0;
-            padding: 30px;
-            background-color: var(--white);
-            border-radius: 12px;
-        }
-
-        .filter-title {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .feelings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .feeling-btn {
-            padding: 15px;
-            background-color: var(--light);
-            border: 2px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            font-size: 0.95rem;
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .feeling-btn:hover {
-            border-color: var(--primary);
-            background-color: var(--white);
-        }
-
-        .feeling-btn.active {
-            background-color: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .startseite {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                min-height: auto;
-                padding: 20px 0;
-            }
-
-            .startseite-text h1 {
-                font-size: 2.2rem;
-            }
-
-            .exercise-header {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .exercise-info {
-                padding-right: 0;
-            }
-
-            .exercise-title {
-                font-size: 1.8rem;
-            }
-
-            .steps-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .reflection-section {
-                grid-template-columns: 1fr;
-            }
-
-            .buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        /* UTILITIES */
-        .hidden {
-            display: none;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Somatische Übungen für dein Nervensystem – offline verfügbar.">
+  <meta name="theme-color" content="#7A8E8A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ATEM-PAUSE">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192'/><text x='96' y='120' font-size='80' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui'>AP</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%237A8E8A' width='180' height='180' rx='40'/><text x='90' y='125' font-size='70' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui'>AP</text></svg>">
+  <title>ATEM-PAUSE – Dein Nervensystem</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #f5f9f8 0%, #faf8f6 100%); color: #5A6B68; min-height: 100vh; display: flex; flex-direction: column; }
+    .app-header { background: white; border-bottom: 1px solid #C7A2A8; padding: 1.5rem 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
+    .app-header h1 { font-size: 22px; font-weight: 500; color: #7A8E8A; margin-bottom: 0.5rem; }
+    .app-header p { font-size: 13px; color: #B8949E; }
+    .container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 1rem 1rem 3rem; }
+    
+    .welcome-screen { text-align: center; padding: 80px 20px; }
+    .welcome-screen h2 { font-size: 1.8rem; color: #7A8E8A; margin-bottom: 30px; }
+    .welcome-screen p { font-size: 1rem; color: #5A6B68; margin-bottom: 50px; line-height: 1.8; }
+    
+    .code-input-group { max-width: 400px; margin: 0 auto; }
+    .code-input { width: 100%; padding: 14px; border: 2px solid #C7A2A8; border-radius: 8px; font-size: 16px; margin-bottom: 15px; font-family: monospace; letter-spacing: 2px; }
+    .code-button { width: 100%; padding: 14px; background: #7A8E8A; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .code-button:hover { background: #6a7d7a; }
+    .code-button:active { transform: scale(0.98); }
+    .code-message { margin-top: 20px; font-size: 14px; min-height: 20px; text-align: center; }
+    .error { color: #d32f2f; }
+    .success { color: #7A8E8A; font-weight: 600; }
+    
+    .code-hint { font-size: 12px; color: #B8949E; margin-top: 30px; text-align: center; line-height: 1.6; }
+    .code-hint a { color: #C5A55C; text-decoration: none; font-weight: 500; }
+    .code-hint a:hover { text-decoration: underline; }
+    
+    .exercises-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: rgba(232, 240, 237, 0.5); padding: 1.5rem; border-radius: 12px; }
+    .exercises-header h2 { font-size: 1.3rem; color: #7A8E8A; }
+    .exercise-count { font-size: 2rem; font-weight: 700; color: #C5A55C; }
+    
+    .upgrade-banner { background: linear-gradient(135deg, rgba(197, 165, 92, 0.1), rgba(184, 148, 158, 0.1)); border: 1px solid #C5A55C; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; text-align: center; }
+    .upgrade-banner h3 { font-size: 1.1rem; color: #7A8E8A; margin-bottom: 0.5rem; }
+    .upgrade-banner p { font-size: 0.95rem; color: #5A6B68; margin-bottom: 1rem; line-height: 1.6; }
+    .upgrade-button { display: inline-block; padding: 10px 24px; background: #C5A55C; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+    .upgrade-button:hover { background: #b8925c; }
+    
+    .section { margin-bottom: 2rem; }
+    .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #7A8E8A; font-weight: 600; margin-bottom: 1rem; }
+    
+    .exercise-card { background: white; border: 1px solid #C7A2A8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s; }
+    .exercise-card:hover { background: rgba(232, 240, 237, 0.3); border-color: #B8949E; }
+    .exercise-info h3 { font-size: 15px; font-weight: 500; color: #7A8E8A; margin-bottom: 0.3rem; }
+    .exercise-info p { font-size: 13px; color: #B8949E; }
+    .counter { font-size: 12px; color: #999; margin-top: 10px; text-align: right; }
+    
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; overflow-y: auto; }
+    .modal.active { display: flex; align-items: center; justify-content: center; }
+    .modal-content { background: white; border-radius: 16px; padding: 2rem 1.5rem; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; margin: auto; }
+    .modal-close { float: right; font-size: 24px; color: #B8949E; cursor: pointer; border: none; background: none; font-weight: bold; }
+    .modal-title { font-size: 20px; font-weight: 500; color: #7A8E8A; margin: 1rem 0 0.5rem; clear: both; }
+    .modal-time { font-size: 13px; color: #B8949E; margin-bottom: 1rem; }
+    .modal-description { font-size: 14px; color: #5A6B68; line-height: 1.6; margin-bottom: 1.5rem; }
+    .modal-steps { background: rgba(232, 240, 237, 0.6); border: 1px solid #C7A2A8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+    .modal-steps h4 { font-size: 13px; font-weight: 600; color: #7A8E8A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
+    .modal-steps ol { margin-left: 1.5rem; color: #5A6B68; }
+    .modal-steps li { font-size: 13px; line-height: 1.65; margin-bottom: 0.75rem; }
+    .modal-focus { background: rgba(184, 148, 158, 0.08); border-left: 3px solid #B8949E; padding: 1rem; margin-bottom: 1.5rem; }
+    .modal-focus p { font-size: 13px; color: #7A8E8A; line-height: 1.65; margin: 0; }
+    
+    .navigation { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
+    .nav-btn { flex: 1; padding: 12px; background: #7A8E8A; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+    .nav-btn:hover:not(:disabled) { background: #6a7d7a; }
+    .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .reset-code { font-size: 12px; text-align: center; margin-top: 20px; }
+    .reset-code button { background: none; border: none; color: #B8949E; cursor: pointer; text-decoration: underline; font-size: 12px; }
+    .reset-code button:hover { color: #7A8E8A; }
+    
+    .install-prompt { background: rgba(197, 165, 92, 0.1); border: 1px solid #C5A55C; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; text-align: center; display: none; }
+    .install-prompt p { font-size: 0.95rem; color: #5A6B68; margin-bottom: 0.8rem; }
+    .install-btn { padding: 10px 20px; background: #C5A55C; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
+    .install-btn:hover { background: #b8925c; }
+    
+    @media (max-width: 600px) {
+      .exercises-header { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- STARTSEITE -->
-        <div id="startseite" class="startseite active">
-            <div class="startseite-text">
-                <h1>Deine ATEM-PAUSE</h1>
-                <h2>Somatische Übungen für Ruhe & Kraft</h2>
-                <p>Willkommen. In dieser App findest du 112 Übungen für dein Nervensystem – kleine, konkrete Dinge, die du überall machen kannst. Nicht für dein Gehirn. Für deinen Körper. Los geht's.</p>
-                
-                <div class="hinweise">
-                    <div class="hinweis-item">
-                        <span>🛑</span>
-                        <div><strong>Bei Schmerzen, Schwindel oder Atemnot:</strong> Bitte stoppen</div>
-                    </div>
-                    <div class="hinweis-item">
-                        <span>💙</span>
-                        <div><strong>Jeder Körper ist anders</strong> – es ist okay wenn etwas nichts auslöst</div>
-                    </div>
-                    <div class="hinweis-item">
-                        <span>🤝</span>
-                        <div><strong>Bei Trauma/psychischen Belastungen:</strong> Professionelle Begleitung sinnvoll</div>
-                    </div>
-                </div>
+  <div class="app-header">
+    <h1>Dein Nervensystem</h1>
+    <p>Somatische Übungen für Ruhe & Kraft</p>
+  </div>
 
-                <div class="buttons">
-                    <button class="btn btn-primary" onclick="startApp()">Zu den Übungen →</button>
-                </div>
-            </div>
-
-            <div class="startseite-image">
-                <img src="/images/exercises/00-startseite.png" alt="Deine ATEM-PAUSE – Willkommen">
-            </div>
-        </div>
-
-        <!-- ÜBUNGEN CONTAINER -->
-        <div id="app-container" class="hidden">
-            <!-- Übung 1 -->
-            <div id="exercise-1" class="exercise-page active fade-in">
-                <div class="exercise-header">
-                    <div class="exercise-info">
-                        <div class="exercise-category">Übung 1 · Erdung</div>
-                        <h1 class="exercise-title">Erdung: Mit beiden Füssen ankommen</h1>
-                        <p class="emotional-opener">Du stehst auf festem Grund.</p>
-                        
-                        <div class="meta">
-                            <div class="exercise-meta">
-                                <div class="meta-item">⏱️ 3 Min</div>
-                                <div class="meta-item">🧍 Stehen oder Sitzen</div>
-                            </div>
-                        </div>
-
-                        <div class="good-for">
-                            <div class="good-for-title">Gut für</div>
-                            <div class="tags">
-                                <span class="tag">Gedankenkarussell</span>
-                                <span class="tag">Unruhe</span>
-                                <span class="tag">Verloren sein</span>
-                            </div>
-                        </div>
-
-                        <div class="symbols">
-                            <div class="symbol">🌿</div>
-                            <div class="symbol">🤍</div>
-                        </div>
-                    </div>
-
-                    <div class="exercise-image">
-                        <img src="/images/exercises/01-erdung.png" alt="Erdung: Mit beiden Füssen ankommen">
-                    </div>
-                </div>
-
-                <div class="steps">
-                    <div class="steps-title">So geht's</div>
-                    <div class="steps-grid">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Gewicht spüren</div>
-                            <div class="step-description">Steh oder sitz aufrecht hin. Spür die Stelle wo deine Füße (oder dein Gesäß) den Boden berühren.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-label">Nach unten sinken</div>
-                            <div class="step-description">Schieb dein Gewicht ganz bewusst nach unten - so als würdest du Wurzeln schlagen.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Tief atmen</div>
-                            <div class="step-description">Atme 3x tief ein und aus. Mit jedem Ausatmen: Lass dich noch ein bisschen tiefer sinken.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Augen öffnen</div>
-                            <div class="step-description">Öffne deine Augen. Das Gefühl von Verankerung bleibt noch eine ganze Weile bei dir.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-label">Nachspüren</div>
-                            <div class="step-description">Nimm wahr, wie sich dein Körper anfühlt.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reflection-section">
-                    <div class="reflection-box">
-                        <div class="reflection-icon">🔍</div>
-                        <div class="reflection-content">
-                            <div class="reflection-title">Spür danach nach</div>
-                            <div class="reflection-text">Spürst du die Verbindung zu deinen Füssen stärker als vorher?</div>
-                        </div>
-                    </div>
-                    <div class="anchor-box">
-                        <div class="anchor-icon">❤️</div>
-                        <div class="anchor-content">
-                            <div class="anchor-title">Dein Satz für diesen Moment</div>
-                            <div class="anchor-text">„Ich bin verankert."</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="navigation">
-                    <button class="nav-button" onclick="previousExercise()" disabled>← Zurück</button>
-                    <span class="nav-counter">Übung <span id="current-exercise">1</span> von <span id="total-exercises">12</span></span>
-                    <button class="nav-button" onclick="nextExercise()">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- Übung 2 -->
-            <div id="exercise-2" class="exercise-page fade-in">
-                <div class="exercise-header">
-                    <div class="exercise-info">
-                        <div class="exercise-category">Übung 2 · Atemregulation</div>
-                        <h1 class="exercise-title">Box Breathing: Der 4-4-4-4 Rhythmus</h1>
-                        <p class="emotional-opener">Wenn dein Herz rast - dieser Atem-Rhythmus verlangsamt es.</p>
-                        
-                        <div class="meta">
-                            <div class="exercise-meta">
-                                <div class="meta-item">⏱️ 3 Min</div>
-                                <div class="meta-item">🧍 Sitzen</div>
-                            </div>
-                        </div>
-
-                        <div class="good-for">
-                            <div class="good-for-title">Gut für</div>
-                            <div class="tags">
-                                <span class="tag">Stress</span>
-                                <span class="tag">Herzrasen</span>
-                                <span class="tag">Anspannung</span>
-                            </div>
-                        </div>
-
-                        <div class="symbols">
-                            <div class="symbol">🤍</div>
-                            <div class="symbol">🪑</div>
-                        </div>
-                    </div>
-
-                    <div class="exercise-image">
-                        <img src="/images/exercises/02-box-breathing.png" alt="Box Breathing: Der 4-4-4-4 Rhythmus">
-                    </div>
-                </div>
-
-                <div class="steps">
-                    <div class="steps-title">So geht's</div>
-                    <div class="steps-grid">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Einatmen (4)</div>
-                            <div class="step-description">Setz oder leg dich hin. Atme ein - zähle langsam bis 4.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-label">Halten (4)</div>
-                            <div class="step-description">Halte an - zähle bis 4.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Ausatmen (4)</div>
-                            <div class="step-description">Atme aus - zähle bis 4.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Halten (4)</div>
-                            <div class="step-description">Halte an - zähle bis 4.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-label">Wiederholen</div>
-                            <div class="step-description">Wiederhole 5-10 Mal. Mit jeder Runde wird dein Herzschlag langsamer.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reflection-section">
-                    <div class="reflection-box">
-                        <div class="reflection-icon">🔍</div>
-                        <div class="reflection-content">
-                            <div class="reflection-title">Spür danach nach</div>
-                            <div class="reflection-text">Merkst du dass dein Puls ruhiger wird?</div>
-                        </div>
-                    </div>
-                    <div class="anchor-box">
-                        <div class="anchor-icon">❤️</div>
-                        <div class="anchor-content">
-                            <div class="anchor-title">Dein Satz für diesen Moment</div>
-                            <div class="anchor-text">„Ich atme in meinem Rhythmus."</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="navigation">
-                    <button class="nav-button" onclick="previousExercise()">← Zurück</button>
-                    <span class="nav-counter">Übung <span id="current-exercise">2</span> von <span id="total-exercises">12</span></span>
-                    <button class="nav-button" onclick="nextExercise()">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- Übung 3 -->
-            <div id="exercise-3" class="exercise-page fade-in">
-                <div class="exercise-header">
-                    <div class="exercise-info">
-                        <div class="exercise-category">Übung 3 · Körperwahrnehmung</div>
-                        <h1 class="exercise-title">Die 5 Sinne: Jetzt-Verankerung</h1>
-                        <p class="emotional-opener">Dein wirbeliger Kopf lebt in Zukunftsängsten. Diese Übung klebt dich wieder an die Gegenwart.</p>
-                        
-                        <div class="meta">
-                            <div class="exercise-meta">
-                                <div class="meta-item">⏱️ 5 Min</div>
-                                <div class="meta-item">🧍 Sitzen/Stehen</div>
-                            </div>
-                        </div>
-
-                        <div class="good-for">
-                            <div class="good-for-title">Gut für</div>
-                            <div class="tags">
-                                <span class="tag">Gedankenkreisen</span>
-                                <span class="tag">Panik</span>
-                                <span class="tag">Unruhe</span>
-                            </div>
-                        </div>
-
-                        <div class="symbols">
-                            <div class="symbol">🤍</div>
-                            <div class="symbol">🪑</div>
-                        </div>
-                    </div>
-
-                    <div class="exercise-image">
-                        <img src="/images/exercises/03-5-sinne.png" alt="Die 5 Sinne: Jetzt-Verankerung">
-                    </div>
-                </div>
-
-                <div class="steps">
-                    <div class="steps-title">So geht's</div>
-                    <div class="steps-grid">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Sehen (5)</div>
-                            <div class="step-description">Sitz oder steh hin. Nenn 5 Dinge die du SIEHST.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-label">Fühlen (4)</div>
-                            <div class="step-description">Nenn 4 Dinge die du FÜHLST (Kleidung, Stuhl).</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Hören (3)</div>
-                            <div class="step-description">Nenn 3 Dinge die du HÖRST (auch leise).</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Riechen (2)</div>
-                            <div class="step-description">Nenn 2 Dinge die du RIECHST.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-label">Schmecken (1)</div>
-                            <div class="step-description">Nenn 1 Ding das du SCHMECKST. Du bist im JETZT.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reflection-section">
-                    <div class="reflection-box">
-                        <div class="reflection-icon">🔍</div>
-                        <div class="reflection-content">
-                            <div class="reflection-title">Spür danach nach</div>
-                            <div class="reflection-text">Bin ich wieder mehr im Hier und Jetzt?</div>
-                        </div>
-                    </div>
-                    <div class="anchor-box">
-                        <div class="anchor-icon">❤️</div>
-                        <div class="anchor-content">
-                            <div class="anchor-title">Dein Satz für diesen Moment</div>
-                            <div class="anchor-text">„Ich bin jetzt."</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="navigation">
-                    <button class="nav-button" onclick="previousExercise()">← Zurück</button>
-                    <span class="nav-counter">Übung <span id="current-exercise">3</span> von <span id="total-exercises">12</span></span>
-                    <button class="nav-button" onclick="nextExercise()">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- Übung 4 -->
-            <div id="exercise-4" class="exercise-page fade-in">
-                <div class="exercise-header">
-                    <div class="exercise-info">
-                        <div class="exercise-category">Übung 4 · Erdung</div>
-                        <h1 class="exercise-title">Erdungs-Atemzug: Die Universalübung</h1>
-                        <p class="emotional-opener">Kurz kraftvoll und sofort wirksam - wenn zu viel ist fängt man hier an.</p>
-                        
-                        <div class="meta">
-                            <div class="exercise-meta">
-                                <div class="meta-item">⏱️ 2 Min</div>
-                                <div class="meta-item">🧍 Sitzen/Stehen</div>
-                            </div>
-                        </div>
-
-                        <div class="good-for">
-                            <div class="good-for-title">Gut für</div>
-                            <div class="tags">
-                                <span class="tag">Überforderung</span>
-                                <span class="tag">Panik</span>
-                                <span class="tag">Zu viel</span>
-                            </div>
-                        </div>
-
-                        <div class="symbols">
-                            <div class="symbol">⚡</div>
-                            <div class="symbol">🤍</div>
-                        </div>
-                    </div>
-
-                    <div class="exercise-image">
-                        <img src="/images/exercises/04-erdungs-atemzug.png" alt="Erdungs-Atemzug: Die Universalübung">
-                    </div>
-                </div>
-
-                <div class="steps">
-                    <div class="steps-title">So geht's</div>
-                    <div class="steps-grid">
-                        <div class="step">
-                            <div class="step-number">1</div>
-                            <div class="step-label">Einatmen (4)</div>
-                            <div class="step-description">Atme tief ein - zähle bis 4. Energie fließt zu deinen Füßen.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-label">Halten (2)</div>
-                            <div class="step-description">Halte an - zähle bis 2.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-label">Ausatmen (6)</div>
-                            <div class="step-description">Atme aus - zähle bis 6. Spannung weicht aus dir heraus.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-label">Wiederholen</div>
-                            <div class="step-description">Wiederhole 3-5 Mal.</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">5</div>
-                            <div class="step-label">Nachspüren</div>
-                            <div class="step-description">Du bist präsenter, leichter, weniger im Kopf.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="reflection-section">
-                    <div class="reflection-box">
-                        <div class="reflection-icon">🔍</div>
-                        <div class="reflection-content">
-                            <div class="reflection-title">Spür danach nach</div>
-                            <div class="reflection-text">Bin ich weniger im Kopf und mehr im Körper?</div>
-                        </div>
-                    </div>
-                    <div class="anchor-box">
-                        <div class="anchor-icon">❤️</div>
-                        <div class="anchor-content">
-                            <div class="anchor-title">Dein Satz für diesen Moment</div>
-                            <div class="anchor-text">„Ich bin präsent."</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="navigation">
-                    <button class="nav-button" onclick="previousExercise()">← Zurück</button>
-                    <span class="nav-counter">Übung <span id="current-exercise">4</span> von <span id="total-exercises">12</span></span>
-                    <button class="nav-button" onclick="nextExercise()">Weiter →</button>
-                </div>
-            </div>
-
-            <!-- Übung 5-12 (gekürzt für Speichereffizienz) -->
-            <!-- Die restlichen Übungen folgen dem gleichen Pattern wie oben -->
-            <!-- Hier nur Platzhalter - vollständige Version separat -->
-
-        </div>
+  <div class="container">
+    <!-- INSTALLATIONSMELDUNG -->
+    <div id="installPrompt" class="install-prompt">
+      <p>📱 Installiere ATEM-PAUSE auf deinem Homescreen – offline verfügbar!</p>
+      <button class="install-btn" onclick="installApp()">Zur App machen</button>
     </div>
 
-    <script>
-        let currentPage = 'startseite';
-        let currentExercise = 1;
-        const totalExercises = 12;
+    <!-- WILLKOMMENSEITE MIT CODE-EINGABE -->
+    <div id="welcomeScreen" class="welcome-screen" style="display:none;">
+      <h2>Willkommen zur ATEM-PAUSE</h2>
+      <p>Dein Unlock-Code wurde dir nach dem Kauf per E-Mail zugesendet.<br>Gib ihn hier ein – nur einmalig.</p>
+      
+      <div class="code-input-group">
+        <input type="text" id="unlockCode" class="code-input" placeholder="Code eingeben" />
+        <button class="code-button" onclick="verifyCode()">Freischalten</button>
+        <div id="codeMessage" class="code-message"></div>
+      </div>
+      
+      <div class="code-hint">
+        Du hast noch keinen Code?<br>
+        <a href="https://carolin-semmelroth.odoo.com/" target="_blank">Hier geht's zum Shop →</a>
+      </div>
+    </div>
 
-        function startApp() {
-            document.getElementById('startseite').classList.remove('active');
-            document.getElementById('app-container').classList.remove('hidden');
-            showExercise(1);
-        }
+    <!-- ÜBUNGEN-ÜBERSICHT -->
+    <div id="exercisesScreen" style="display:none;">
+      <div class="exercises-header">
+        <div>
+          <h2>Deine Übungen</h2>
+        </div>
+        <div class="exercise-count" id="exerciseCountDisplay">12</div>
+      </div>
+      
+      <!-- UPGRADE-BANNER (nur wenn nicht Premium) -->
+      <div id="upgradeBanner" class="upgrade-banner" style="display:none;">
+        <h3>🚀 Mehr Übungen freischalten</h3>
+        <p>Du hast die INTRO-Version. Upgrade zu PREMIUM und bekomme alle 112 Übungen – speziell für Mamas, Fotografinnen und Frauen.</p>
+        <a href="https://carolin-semmelroth.odoo.com/" target="_blank" class="upgrade-button">Zu PREMIUM upgraden</a>
+      </div>
+      
+      <div id="exercisesList"></div>
+      
+      <div class="reset-code">
+        <button onclick="resetCode()">Code wechseln</button>
+      </div>
+    </div>
+  </div>
 
-        function showExercise(num) {
-            // Hide all exercises
-            for (let i = 1; i <= totalExercises; i++) {
-                const el = document.getElementById('exercise-' + i);
-                if (el) {
-                    el.classList.remove('active');
-                }
-            }
-            
-            // Show current exercise
-            const current = document.getElementById('exercise-' + num);
-            if (current) {
-                current.classList.add('active', 'fade-in');
-            }
-            
-            currentExercise = num;
-            updateNav();
-        }
+  <!-- MODAL FÜR ÜBUNGS-DETAILS -->
+  <div id="exerciseModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalBody"></div>
+      <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="previousExercise()" style="background:#B8949E;">← Zurück</button>
+        <button class="nav-btn" id="nextBtn" onclick="nextExercise()" style="background:#C5A55C;">Nächste →</button>
+      </div>
+    </div>
+  </div>
 
-        function nextExercise() {
-            if (currentExercise < totalExercises) {
-                showExercise(currentExercise + 1);
-                window.scrollTo(0, 0);
-            }
-        }
+  <script>
+    const exercises = {
+      intro: [
+        {id:"erdung", title:"Erdung – mit beiden Füßen ankommen", time:3, desc:"Wenn alles in dir brodelt - diese Übung erinnert dich: Du stehst auf festem Grund.", steps:["Steh oder sitz aufrecht hin. Spür die Stelle, wo deine Füße den Boden berühren.", "Schieb dein Gewicht ganz bewusst nach unten - so, als würdest du Wurzeln schlagen.", "Atme 3x tief ein und aus. Mit jedem Ausatmen: Lass dich noch ein bisschen tiefer sinken.", "Öffne deine Augen. Das Gefühl von Verankerung bleibt noch eine Weile bei dir."], focus:"Wenn du verwurzelt bist, kann Reizbarkeit nicht hochfahren. Dein Körper beruhigt sich von selbst."},
+        {id:"box", title:"Box Breathing – der 4-4-4-4 Rhythmus", time:3, desc:"Wenn dein Herz rast - dieser Atem-Rhythmus verlangsamt es wie ein Zauber.", steps:["Setz oder leg dich hin. Suche dir einen ruhigen Platz.", "Atme ein - zähle bis 4.", "Halte an - zähle bis 4.", "Atme aus - zähle bis 4.", "Halte an - zähle bis 4.", "Wiederhole 5-10 Mal. Mit jeder Runde wird dein Herzschlag langsamer."], focus:"Schneller Atem = schnelles Herz. Das ist Angst. Langsamer Atem = Sicherheit. Dein Atem ist dein Regler."},
+        {id:"sinne", title:"Die 5 Sinne – Jetzt-Verankerung", time:5, desc:"Dein wirbeliger Kopf lebt in Zukunftsängsten. Diese Übung klebt dich wieder an die Gegenwart.", steps:["Sitz oder steh hin. Atme ruhig.", "Nenn 5 Dinge, die du SIEHST - auch kleine.", "Nenn 4 Dinge, die du FÜHLST.", "Nenn 3 Dinge, die du HÖRST.", "Nenn 2 Dinge, die du RIECHST und 1 Ding, das du SCHMECKST.", "Fertig. Spür nach - du bist wieder im JETZT."], focus:"Die Unruhe lebt in Übermorgen. Die 5 Sinne bringen dich ins JETZT und dort bist du sicher."},
+        {id:"universal", title:"Erdungs-Atemzug – die Universal-Übung", time:2, desc:"Kurz, kraftvoll und sofort wirksam - wenn zu viel ist, fängt man hier an.", steps:["Atme tief ein - zähle bis 4. Stell dir vor: Energie fließt bis in deine Füße.", "Halte an - zähle bis 2.", "Atme aus - zähle bis 6. Die alte Spannung weicht aus dir heraus.", "Wiederhole 3-5 Mal.", "Spür nach: Du bist weniger im Kopf, mehr im Körper."], focus:"Wenn zu viel passiert, brauchst du zuerst Platz zum Atmen. Diese Übung schafft diesen Platz."},
+        {id:"schulter", title:"Schulter-Puls – Spannung lösen", time:4, desc:"Hinter Kopfschmerzen steckt oft Nackenverspannung. Diese Übung löst sie sanft.", steps:["Setz oder steh aufrecht hin. Lass deine Arme entspannt hängen.", "Hebe beide Schultern zu den Ohren - atme dabei ein (zähle bis 3).", "Halt kurz inne - spür die Anspannung.", "Atme aus und lass die Schultern fallen (zähle bis 3).", "Wiederhole 5-8 Mal. Mit jedem Mal wird es leichter."], focus:"Deine Schultern halten Spannung fest. Wenn du sie anspannst und loslässt, merkst du: Es ist möglich."},
+        {id:"gegenpol", title:"Gegenpol-Berührung – Erwachen", time:3, desc:"Wenn Teile deines Körpers taub wirken - diese Übung bringt Gefühl zurück.", steps:["Schließ deine Augen. Wo genau spürst du Taubheit?", "Berühre diese Stelle sehr sanft mit der anderen Hand.", "Atme ruhig. Konzentriere dich auf das Gefühl.", "Nach 30-60 Sekunden: Die tauben Stellen werden lebendig.", "Öffne deine Augen. Dein Körper ist ganz da."], focus:"Taubheit sagt: Ich traue mich nicht zu fühlen. Sanfte Berührung antwortet: Es ist sicher."},
+        {id:"anspannung", title:"Anspannen und Loslassen – der Körper versteht", time:5, desc:"Eine Technik, so alt wie wirksam: erst sammeln, dann freigeben.", steps:["Schließ deine Augen. Setz dich bequem hin.", "Beginne mit deinen Füßen: Spann alle Muskeln an (3 Sekunden), dann lass los.", "Geh weiter: Beine - Po - Bauch - Brust - Schultern - Arme - Nacken - Gesicht.", "Bei jedem Teil: Anspannen - Loslassen - Spüren.", "Am Ende: Dein Körper ist wach UND ruhig."], focus:"Dein Körper versteht nicht 'Entspann dich!' Aber er versteht: Anspannen, dann loslassen."},
+        {id:"atem478", title:"4-7-8 Atem – der Einschlaf-Trick", time:3, desc:"Ein neurologischer Kniff: dieser Atemrhythmus schaltet Ruhe-Modus ein.", steps:["Leg dich hin oder sitz komfortabel.", "Atme ein - zähle bis 4.", "Halte an - zähle bis 7.", "Atme aus - zähle bis 8 (das lange Ausatmen ist der Schlüssel).", "Wiederhole 4-8 Mal.", "Dein Körper wird schwer, Geist wird still."], focus:"Das Gedankenkarussell dreht sich weil Atem flach ist. Langes Ausatmen schaltet Ruhe-Zeit ein."},
+        {id:"bewegung", title:"Sanfte Bewegung – wieder lebendig werden", time:4, desc:"Wenn dein Körper eingefroren wirkt - diese Übung weckt ihn auf.", steps:["Steh auf oder sitz aufrecht. Es braucht nur kleine Bewegung.", "Wiege deinen Oberkörper sanft hin und her.", "Nach einer Weile: sanfte Kopfbewegungen.", "Dann: Schultern kreisen, Hüften kreisen - langsam.", "Dein Körper wacht auf. Erstarrung löst sich."], focus:"Erstarrung sagt: Ich traue mich nicht. Sanfte Bewegung antwortet: Es ist sicher."},
+        {id:"vagal", title:"Vagal Summen – Ruhe-Signal aktivieren", time:3, desc:"Diese Übung spricht deinen Vagusnerv an - tiefsten Ruhe-Nerv deines Körpers.", steps:["Sitz oder leg dich hin. Atme ruhig.", "Summe tief mit geschlossenem Mund - wie eine Biene (mmmmm).", "Lass Ton in deinem Körper vibrieren.", "Lass Summen 10-15 Sekunden anhalten.", "Pause. Spür nach - wie ist es?", "Wiederhole 3-5 Mal. Dein Nervensystem: Jetzt ist Ruhe."], focus:"Burnout ist nicht nichts tun - es ist, dass dein Körper keine Erlaubnis bekommt, Ruhe zu gehen."},
+        {id:"mama", title:"Mama-Moment – Geduld zurückgewinnen", time:2, desc:"Wenn Geduld aufgebraucht ist und du wieder präsent sein möchtest.", steps:["Setz oder stell dich hin - wo Kinder dich nicht direkt sehen.", "Atme tief ein und zähle bis 5.", "Atme aus und zähle bis 5.", "Wiederhole 3-5 Atemzüge.", "Spür deinen Körper: Wo ist Spannung? Schultern? Kiefer? Lass los.", "Öffne Augen. Du bist wieder du."], focus:"Reizbarkeit kommt oft nicht von Kindern sondern von deinem überreizten Nervensystem."},
+        {id:"foto", title:"Fotografin-Mut – vor Kamera selbstbewusst", time:3, desc:"Angst vor eigener Kamera verlieren - diese Übung stärkt Selbstwertgefühl.", steps:["Steh vor Spiegel oder stell dich hin.", "Atme tief ein und sag: Ich kenne meinen Körper. Ich bin hier.", "Spür Füße auf Boden. Gewicht deines Körpers.", "Atme aus. Schultern sinken.", "Schau in deine Augen. Erkenne dich selbst.", "Wiederhole: Ich darf mich sehen. Meine Geschichte ist wertvoll.", "Dann: Schreib Affirmation auf oder mach Foto von dir."], focus:"Beste Fotografin sieht Menschen. Wenn du dich selbst siehst, können Kundinnen das fühlen."}
+      ],
+      premium: []
+    };
 
-        function previousExercise() {
-            if (currentExercise > 1) {
-                showExercise(currentExercise - 1);
-                window.scrollTo(0, 0);
-            }
-        }
+    let currentExerciseIndex = 0;
+    let currentExercises = [];
+    let isIntro = false;
+    let deferredPrompt;
 
-        function updateNav() {
-            document.querySelectorAll('#current-exercise').forEach(el => {
-                el.textContent = currentExercise;
-            });
-            
-            const prevBtn = document.querySelector('.nav-button:first-of-type');
-            const nextBtn = document.querySelector('.nav-button:last-of-type');
-            
-            if (prevBtn) prevBtn.disabled = currentExercise === 1;
-            if (nextBtn) nextBtn.disabled = currentExercise === totalExercises;
-        }
+    // Service Worker registrieren (optional – App funktioniert auch ohne)
+    if ("serviceWorker" in navigator && location.protocol === "https:") {
+      navigator.serviceWorker.register("service-worker.js").catch(err => {
+        // Fehler sind okay – App lädt auch ohne Service Worker
+      });
+    }
 
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (currentPage !== 'startseite') {
-                if (e.key === 'ArrowRight') nextExercise();
-                if (e.key === 'ArrowLeft') previousExercise();
-            }
+    // Install-Prompt abfangen
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById("installPrompt").style.display = "block";
+    });
+
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            document.getElementById("installPrompt").style.display = "none";
+          }
+          deferredPrompt = null;
         });
-    </script>
+      }
+    }
+
+    function initApp() {
+      const storedCode = localStorage.getItem("atem_unlock_code");
+      if (storedCode) {
+        loadExercises(storedCode);
+      } else {
+        document.getElementById("welcomeScreen").style.display = "block";
+        document.getElementById("exercisesScreen").style.display = "none";
+      }
+    }
+
+    function verifyCode() {
+      const code = document.getElementById("unlockCode").value.trim().toUpperCase();
+      const messageDiv = document.getElementById("codeMessage");
+      if (!code) {
+        messageDiv.innerHTML = "<div class=\"error\">Bitte gib deinen Code ein.</div>";
+        return;
+      }
+
+      let isValid = false;
+      if (code === "INTRO2024") {
+        isValid = true;
+        isIntro = true;
+      } else if (code === "PRO2026") {
+        isValid = true;
+        isIntro = false;
+      }
+
+      if (isValid) {
+        localStorage.setItem("atem_unlock_code", code);
+        messageDiv.innerHTML = "<div class=\"success\">✓ Freigeschalten! Viel Kraft für dich!</div>";
+        setTimeout(() => {
+          loadExercises(code);
+        }, 1000);
+      } else {
+        messageDiv.innerHTML = "<div class=\"error\">❌ Code nicht erkannt. Bitte überprüfen.</div>";
+      }
+    }
+
+    function loadExercises(code) {
+      if (code === "INTRO2024") {
+        currentExercises = exercises.intro;
+        isIntro = true;
+      } else if (code === "PRO2026") {
+        currentExercises = exercises.intro.concat(exercises.premium);
+        isIntro = false;
+      }
+
+      document.getElementById("welcomeScreen").style.display = "none";
+      document.getElementById("exercisesScreen").style.display = "block";
+      document.getElementById("exerciseCountDisplay").textContent = currentExercises.length;
+
+      if (isIntro) {
+        document.getElementById("upgradeBanner").style.display = "block";
+      } else {
+        document.getElementById("upgradeBanner").style.display = "none";
+      }
+
+      renderExercises();
+    }
+
+    function renderExercises() {
+      const list = document.getElementById("exercisesList");
+      let html = "<div class=\"section\"><div class=\"section-title\">✨ Deine Übungen</div>";
+      currentExercises.forEach((ex, idx) => {
+        html += "<div class=\"exercise-card\" onclick=\"openModal(" + idx + ")\"><div class=\"exercise-info\"><h3>" + ex.title + "</h3><p>⏱ " + ex.time + " Minuten</p></div><div class=\"counter\">" + (idx+1) + " / " + currentExercises.length + "</div></div>";
+      });
+      html += "</div>";
+      list.innerHTML = html;
+    }
+
+    function openModal(index) {
+      currentExerciseIndex = index;
+      const ex = currentExercises[index];
+      let stepsHtml = "";
+      ex.steps.forEach(step => { stepsHtml += "<li>" + step + "</li>"; });
+      const modalBody = document.getElementById("modalBody");
+      modalBody.innerHTML = "<button class=\"modal-close\" onclick=\"closeModal()\">✕</button><h3 class=\"modal-title\">" + ex.title + "</h3><div class=\"modal-time\">⏱ " + ex.time + " Minuten</div><p class=\"modal-description\">" + ex.desc + "</p><div class=\"modal-steps\"><h4>So geht's:</h4><ol>" + stepsHtml + "</ol></div><div class=\"modal-focus\"><p><strong>Warum das wirkt:</strong> " + ex.focus + "</p></div><div style=\"font-size:0.85rem;color:#999;text-align:center;margin-top:20px;\">Übung " + (currentExerciseIndex+1) + " von " + currentExercises.length + "</div>";
+      document.getElementById("prevBtn").disabled = currentExerciseIndex === 0;
+      document.getElementById("nextBtn").disabled = currentExerciseIndex === currentExercises.length - 1;
+      document.getElementById("exerciseModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("exerciseModal").classList.remove("active");
+    }
+
+    function previousExercise() {
+      if (currentExerciseIndex > 0) openModal(currentExerciseIndex - 1);
+    }
+
+    function nextExercise() {
+      if (currentExerciseIndex < currentExercises.length - 1) openModal(currentExerciseIndex + 1);
+    }
+
+    function resetCode() {
+      if (confirm("Möchtest du den Code wechseln? Alle freigeschalteten Übungen werden zurückgesetzt.")) {
+        localStorage.removeItem("atem_unlock_code");
+        document.getElementById("welcomeScreen").style.display = "block";
+        document.getElementById("exercisesScreen").style.display = "none";
+        document.getElementById("unlockCode").value = "";
+        document.getElementById("codeMessage").textContent = "";
+      }
+    }
+
+    window.addEventListener("load", initApp);
+
+    document.getElementById("exerciseModal").addEventListener("click", e => {
+      if (e.target.id === "exerciseModal") closeModal();
+    });
+  </script>
 </body>
 </html>
