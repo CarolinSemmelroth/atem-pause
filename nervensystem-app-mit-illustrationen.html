@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dein Nervensystem - Ubungen fur dich</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f9f8 0%, #faf8f6 100%);
+      color: #5A6B68;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .app-header {
+      background: white;
+      border-bottom: 1px solid #C7A2A8;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .app-header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .app-header p {
+      font-size: 13px;
+      color: #B8949E;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem;
+      padding-bottom: 3rem;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7A8E8A;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-top: 0.5rem;
+    }
+
+    .exercise-card {
+      background: white;
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .exercise-card:hover:not(.locked) {
+      background: rgba(232, 240, 237, 0.3);
+      border-color: #B8949E;
+    }
+
+    .exercise-card.locked {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .exercise-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .exercise-info h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.3rem;
+    }
+
+    .exercise-info p {
+      font-size: 13px;
+      color: #B8949E;
+      line-height: 1.4;
+    }
+
+    .lock-icon {
+      font-size: 20px;
+      color: #C7A2A8;
+      flex-shrink: 0;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding: 1rem 0;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      max-width: 500px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      margin: auto;
+    }
+
+    .modal-close {
+      float: right;
+      font-size: 24px;
+      color: #B8949E;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin: 1rem 0 0.5rem 0;
+      clear: both;
+    }
+
+    .modal-time {
+      font-size: 13px;
+      color: #B8949E;
+      margin-bottom: 1rem;
+    }
+
+    .modal-description {
+      font-size: 14px;
+      color: #5A6B68;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-illustration {
+      width: 100%;
+      max-height: 180px;
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-illustration svg {
+      width: 100%;
+      max-width: 160px;
+      height: auto;
+    }
+
+    .modal-steps {
+      background: rgba(232, 240, 237, 0.6);
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-steps h4 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #7A8E8A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .modal-steps ol {
+      margin-left: 1.5rem;
+      color: #5A6B68;
+    }
+
+    .modal-steps li {
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-focus {
+      background: rgba(184, 148, 158, 0.08);
+      border-left: 3px solid #B8949E;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0;
+    }
+
+    .modal-focus p {
+      font-size: 13px;
+      color: #7A8E8A;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .modal-focus strong {
+      color: #7A8E8A;
+    }
+
+    .modal-tip {
+      background: rgba(197, 165, 92, 0.06);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 13px;
+      color: #7A8E8A;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .unlock-section {
+      background: rgba(232, 240, 237, 0.5);
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .unlock-section h3 {
+      font-size: 16px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .unlock-section p {
+      font-size: 13px;
+      color: #B8949E;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .unlock-input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #C7A2A8;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 1rem;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    .unlock-button {
+      width: 100%;
+      padding: 12px;
+      background: #B8949E;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .unlock-button:hover {
+      background: #A07D89;
+    }
+
+    .unlock-button:active {
+      transform: scale(0.98);
+    }
+
+    .error-message {
+      color: #C85A30;
+      font-size: 13px;
+      margin-top: 0.5rem;
+    }
+
+    .success-message {
+      color: #7A8E8A;
+      font-size: 13px;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .premium-cta {
+      background: linear-gradient(135deg, rgba(184, 148, 158, 0.1), rgba(197, 165, 92, 0.1));
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .premium-cta h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .premium-cta p {
+      font-size: 13px;
+      color: #B8949E;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .premium-button {
+      background: #C5A55C;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .premium-button:hover {
+      background: #B8925C;
+    }
+
+    @media (max-width: 600px) {
+      .app-header {
+        padding: 1rem;
+      }
+
+      .app-header h1 {
+        font-size: 18px;
+      }
+
+      .modal-content {
+        border-radius: 12px;
+        padding: 1.5rem 1rem;
+      }
+
+      .container {
+        padding: 1rem 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-header">
+    <h1>Deine ATEM-PAUSE</h1>
+    <p>Somatische Übungen für Ruhe & Kraft</p>
+  </div>
+
+  <div class="container">
+    <!-- KOSTENLOSE UBUNGEN -->
+    <div class="section">
+      <div class="section-title">Kostenlos - immer für dich</div>
+      <div id="freeExercises"></div>
+    </div>
+
+    <!-- PREMIUM UBUNGEN -->
+    <div class="section">
+      <div class="section-title">Premium - mehr Übungen</div>
+      <div id="premiumExercises"></div>
+
+      <!-- PREMIUM CTA -->
+      <div class="premium-cta">
+        <h4>50+ Übungen für dich</h4>
+        <p>Übungen speziell für Mamas, Fotografinnen und alle Frauen - um dein Nervensystem in Ruhe zu bringen, wann immer du es brauchst.</p>
+        <a href="https://carolin-semmelroth.odoo.com/" class="premium-button" target="_blank">Zu Odoo - Premium freischalten</a>
+      </div>
+    </div>
+
+    <!-- UNLOCK SECTION -->
+    <div class="unlock-section">
+      <h3>Hast du schon gekauft?</h3>
+      <p>Nach dem Kauf bekommst du einen Unlock-Code. Gib ihn hier ein, um deine Premium-Ubungen freizuschalten.</p>
+      <input type="text" id="unlockCode" class="unlock-input" placeholder="Unlock-Code eingeben" />
+      <button class="unlock-button" onclick="unlockPremium()">Premium freischalten</button>
+      <div id="unlockMessage"></div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="exerciseModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">x</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // UBUNGSDATENBANK
+    const exercises = {
+      free: [
+        {
+          id: "erdung",
+          title: "Erdung: Mit beiden Füssen ankommen",
+          timeMin: 3,
+          description: "Wenn alles in dir brodelt - diese Übung erinnert dich: Du stehst auf festem Grund.",
+          steps: [
+            "Steh oder sitz aufrecht hin. Spür die Stelle, wo deine Füße (oder dein Gesäß) den Boden berühren.",
+            "Schieb dein Gewicht ganz bewusst nach unten - so, als würdest du Wurzeln schlagen.",
+            "Atme 3x tief ein und aus. Mit jedem Ausatmen: Lass dich noch ein bisschen tiefer sinken.",
+            "Öffne deine Augen. Das Gefühl von Verankerung bleibt noch eine ganze Weile bei dir."
+          ],
+          focus: "Wenn du verwurzelt bist, kann die Reizbarkeit nicht mehr hochfahren. Dein Körper beruhigt sich von selbst.",
+          svg: '<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="45" r="18" fill="#FFF" stroke="#7A8E8A" stroke-width="2.5"/><ellipse cx="100" cy="90" rx="28" ry="38" fill="#E8F0ED" stroke="#7A8E8A" stroke-width="2.5"/><line x1="72" y1="75" x2="45" y2="110" stroke="#7A8E8A" stroke-width="2.5" stroke-linecap="round"/><line x1="128" y1="75" x2="155" y2="110" stroke="#7A8E8A" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="110" r="6" fill="#7A8E8A"/><circle cx="155" cy="110" r="6" fill="#7A8E8A"/><line x1="88" y1="125" x2="82" y2="190" stroke="#7A8E8A" stroke-width="3" stroke-linecap="round"/><line x1="112" y1="125" x2="118" y2="190" stroke="#7A8E8A" stroke-width="3" stroke-linecap="round"/><rect x="75" y="190" width="14" height="8" rx="2" fill="#7A8E8A"/><rect x="111" y="190" width="14" height="8" rx="2" fill="#7A8E8A"/><path d="M 82,198 L 70,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 82,198 L 82,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 82,198 L 94,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 118,198 L 106,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 118,198 L 118,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 118,198 L 130,220" stroke="#7A8E8A" stroke-width="1.5" opacity="0.5"/><path d="M 100,20 L 100,35" stroke="#C5A55C" stroke-width="2" stroke-linecap="round"/><polygon points="100,40 95,33 105,33" fill="#C5A55C"/></svg>',
+          category: "Basis"
+        },
+        {
+          id: "boxbreathing",
+          title: "Box Breathing: Der 4-4-4-4 Rhythmus",
+          timeMin: 3,
+          description: "Wenn dein Herz rast - dieser Atem-Rhythmus verlangsamt es wie ein Zauber.",
+          steps: [
+            "Setz oder leg dich hin. Suche dir einen ruhigen Platz.",
+            "Atme ein - zähle langsam bis 4.",
+            "Halte an - zähle bis 4.",
+            "Atme aus - zähle bis 4.",
+            "Halte an - zähle bis 4.",
+            "Wiederhole 5-10 Mal. Mit jeder Runde wird dein Herzschlag langsamer, dein Körper ruhiger."
+          ],
+          focus: "Schneller Atem = schnelles Herz. Das ist Angst. Langsamer Atem = langsames Herz. Das ist Sicherheit. Dein Atem ist dein Regler.",
+          svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><rect x="40" y="40" width="120" height="120" fill="none" stroke="#7A8E8A" stroke-width="2.5" stroke-linecap="round"/><path d="M 40,100 L 25,100" stroke="#C5A55C" stroke-width="2" stroke-linecap="round"/><polygon points="20,100 25,95 25,105" fill="#C5A55C"/><path d="M 100,40 L 100,25" stroke="#B8949E" stroke-width="2" stroke-linecap="round"/><polygon points="100,20 95,25 105,25" fill="#B8949E"/><path d="M 160,100 L 175,100" stroke="#C5A55C" stroke-width="2" stroke-linecap="round"/><polygon points="180,100 175,95 175,105" fill="#C5A55C"/><path d="M 100,160 L 100,175" stroke="#B8949E" stroke-width="2" stroke-linecap="round"/><polygon points="100,180 95,175 105,175" fill="#B8949E"/><text x="50" y="145" font-size="11" fill="#7A8E8A" font-weight="500">Ein</text><text x="145" y="110" font-size="11" fill="#7A8E8A" font-weight="500">Halt</text><text x="55" y="75" font-size="11" fill="#7A8E8A" font-weight="500">Aus</text><text x="5" y="110" font-size="11" fill="#7A8E8A" font-weight="500">Halt</text></svg>',
+          category: "Atem"
+        },
+        {
+          id: "funfsinne",
+          title: "Die 5 Sinne: Jetzt-Verankerung",
+          timeMin: 5,
+          description: "Dein wirbeliger Kopf lebt in Zukunftsängsten. Diese Übung klebt dich wieder an die Gegenwart.",
+          steps: [
+            "Sitz oder steh hin. Atme ruhig.",
+            "Nenn 5 Dinge, die du SIEHST - auch kleine.",
+            "Nenn 4 Dinge, die du FÜHLST (deine Kleidung, die Sitzfläche).",
+            "Nenn 3 Dinge, die du HÖRST (auch leise).",
+            "Nenn 2 Dinge, die du RIECHST und 1 Ding, das du SCHMECKST.",
+            "Fertig. Spür nach - du bist wieder im JETZT."
+          ],
+          focus: "Die Unruhe lebt in übermorgen. Die 5 Sinne bringen dich zurück ins JETZT - und dort bist du sicher.",
+          svg: '<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="50" r="22" fill="#FFF" stroke="#7A8E8A" stroke-width="2.5"/><circle cx="92" cy="45" r="3" fill="#7A8E8A"/><circle cx="108" cy="45" r="3" fill="#7A8E8A"/><circle cx="60" cy="100" r="18" fill="#E8F0ED" stroke="#B8949E" stroke-width="2"/><text x="60" y="106" text-anchor="middle" font-size="11" fill="#7A8E8A" font-weight="500">Sehen</text><circle cx="140" cy="100" r="18" fill="#E8F0ED" stroke="#B8949E" stroke-width="2"/><text x="140" y="106" text-anchor="middle" font-size="11" fill="#7A8E8A" font-weight="500">Hoeren</text><circle cx="100" cy="70" r="18" fill="#E8F0ED" stroke="#C5A55C" stroke-width="2"/><text x="100" y="76" text-anchor="middle" font-size="11" fill="#7A8E8A" font-weight="500">Fuehlen</text><circle cx="75" cy="155" r="18" fill="#E8F0ED" stroke="#B8949E" stroke-width="2"/><text x="75" y="161" text-anchor="middle" font-size="11" fill="#7A8E8A" font-weight="500">Riechen</text><circle cx="125" cy="155" r="18" fill="#E8F0ED" stroke="#B8949E" stroke-width="2"/><text x="125" y="161" text-anchor="middle" font-size="11" fill="#7A8E8A" font-weight="500">Schmecken</text></svg>',
+          category: "Erdung"
+        },
+        {
+          id: "universalubung",
+          title: "Erdungs-Atemzug: Die Universalübung",
+          timeMin: 2,
+          description: "Kurz, kraftvoll und sofort wirksam - wenn zu viel ist, fängt man hier an.",
+          steps: [
+            "Atme tief ein - zähle bis 4. Stell dir vor: Die Energie fließt bis in deine Füße.",
+            "Halte an - zähle bis 2.",
+            "Atme aus - zähle bis 6. Die alte Spannung weicht aus dir heraus.",
+            "Wiederhole 3-5 Mal.",
+            "Spür nach: Du bist weniger im Kopf, mehr im Körper. Präsenter. Leichter."
+          ],
+          focus: "Wenn zu viel passiert, brauchst du zuerst Platz zum Atmen. Diese Übung schafft diesen Platz. Der Rest kommt von selbst.",
+          svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><line x1="100" y1="20" x2="100" y2="180" stroke="#7A8E8A" stroke-width="1" opacity="0.3"/><circle cx="100" cy="35" r="16" fill="#C5A55C" stroke="#7A8E8A" stroke-width="2"/><text x="100" y="42" text-anchor="middle" font-size="10" fill="white" font-weight="600">Ein</text><ellipse cx="100" cy="100" rx="22" ry="24" fill="#B8949E" stroke="#7A8E8A" stroke-width="2"/><text x="100" y="107" text-anchor="middle" font-size="10" fill="white" font-weight="600">Halt</text><circle cx="100" cy="165" r="16" fill="#7A8E8A" stroke="#7A8E8A" stroke-width="2"/><text x="100" y="172" text-anchor="middle" font-size="10" fill="white" font-weight="600">Aus</text><path d="M 100,51 L 100,76" stroke="#C5A55C" stroke-width="2" stroke-linecap="round"/><polygon points="100,80 95,75 105,75" fill="#C5A55C"/><path d="M 100,124 L 100,149" stroke="#C5A55C" stroke-width="2" stroke-linecap="round"/><polygon points="100,153 95,148 105,148" fill="#C5A55C"/></svg>',
+          category: "Basis"
+        }
+      ],
+      premium: [
+        {
+          id: "schulterpuls",
+          title: "Schulter-Puls: Spannung lösen",
+          timeMin: 4,
+          description: "Hinter Kopfschmerzen steckt oft Nackenverspannung. Diese Übung löst sie sanft.",
+          steps: [
+            "Setz oder steh aufrecht hin. Lass deine Arme entspannt hängen.",
+            "Hebe beide Schultern langsam zu den Ohren - atme dabei ein (zähle bis 3).",
+            "Halt kurz inne - spür die Anspannung in dir.",
+            "Atme aus und lass die Schultern mit einem erleichterten Seufzer nach unten fallen (zähle bis 3).",
+            "Wiederhole 5 bis 8 Mal. Mit jedem Mal wird es leichter."
+          ],
+          focus: "Deine Schultern halten die Spannung fest. Wenn du sie bewusst anspannst und dann loslässt, merkst du: Es ist möglich, loszulassen.",
+          svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="35" r="16" fill="#FFF" stroke="#7A8E8A" stroke-width="2.5"/><line x1="95" y1="32" x2="92" y2="32" stroke="#7A8E8A" stroke-width="1.5" stroke-linecap="round"/><line x1="105" y1="32" x2="108" y2="32" stroke="#7A8E8A" stroke-width="1.5" stroke-linecap="round"/><line x1="100" y1="51" x2="100" y2="65" stroke="#7A8E8A" stroke-width="1.5"/><g opacity="0.4"><ellipse cx="75" cy="65" rx="14" ry="20" fill="none" stroke="#B8949E" stroke-width="2"/><ellipse cx="125" cy="65" rx="14" ry="20" fill="none" stroke="#B8949E" stroke-width="2"/><text x="50" y="75" font-size="11" fill="#B8949E">Oben</text></g><ellipse cx="75" cy="85" rx="14" ry="20" fill="none" stroke="#7A8E8A" stroke-width="2.5"/><ellipse cx="125" cy="85" rx="14" ry="20" fill="none" stroke="#7A8E8A" stroke-width="2.5"/><text x="40" y="95" font-size="11" fill="#7A8E8A" font-weight="500">Unten</text><line x1="61" y1="85" x2="35" y2="130" stroke="#7A8E8A" stroke-width="2.5" stroke-linecap="round"/><line x1="139" y1="85" x2="165" y2="130" stroke="#7A8E8A" stroke-width="2.5" stroke-linecap="round"/><path d="M 70,60 L 70,90" stroke="#C5A55C" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,4"/><polygon points="70,95 65,88 75,88" fill="#C5A55C"/><path d="M 130,60 L 130,90" stroke="#C5A55C" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,4"/><polygon points="130,95 125,88 135,88" fill="#C5A55C"/></svg>',
+          category: "Koerper"
+        }
+      ]
+    };
+
+    let isPremiumUnlocked = localStorage.getItem("premiumUnlocked") === "true";
+
+    function renderExercises() {
+      const freeContainer = document.getElementById("freeExercises");
+      freeContainer.innerHTML = exercises.free.map(ex => 
+        "<div class=\"exercise-card\" onclick=\"openModal('" + ex.id + "', false)\">" +
+        "<div class=\"exercise-card-header\">" +
+        "<div class=\"exercise-info\">" +
+        "<h3>" + ex.title + "</h3>" +
+        "<p>Time: " + ex.timeMin + " min</p>" +
+        "</div>" +
+        "</div>" +
+        "</div>"
+      ).join("");
+
+      const premiumContainer = document.getElementById("premiumExercises");
+      premiumContainer.innerHTML = exercises.premium.map(ex => {
+        const locked = !isPremiumUnlocked ? " locked" : "";
+        const lockIcon = !isPremiumUnlocked ? "<div class=\"lock-icon\">lock</div>" : "";
+        return "<div class=\"exercise-card" + locked + "\" onclick=\"openModal('" + ex.id + "', true)\">" +
+          "<div class=\"exercise-card-header\">" +
+          "<div class=\"exercise-info\">" +
+          "<h3>" + ex.title + "</h3>" +
+          "<p>Time: " + ex.timeMin + " min</p>" +
+          "</div>" + lockIcon +
+          "</div>" +
+          "</div>";
+      }).join("");
+    }
+
+    function openModal(exerciseId, isPremium) {
+      if (isPremium && !isPremiumUnlocked) {
+        alert("Diese Ubung ist nur fuer Premium-Mitglieder verfuegbar!");
+        return;
+      }
+
+      const exercises_all = exercises.free.concat(exercises.premium);
+      const exercise = exercises_all.find(e => e.id === exerciseId);
+
+      if (!exercise) return;
+
+      const modalBody = "<button class=\"modal-close\" onclick=\"closeModal()\">x</button>" +
+        "<h3 class=\"modal-title\">" + exercise.title + "</h3>" +
+        "<div class=\"modal-time\">Time: " + exercise.timeMin + " min</div>" +
+        "<p class=\"modal-description\">" + exercise.description + "</p>" +
+        "<div class=\"modal-illustration\">" + exercise.svg + "</div>" +
+        "<div class=\"modal-steps\">" +
+        "<h4>So geht's:</h4>" +
+        "<ol>" +
+        exercise.steps.map(step => "<li>" + step + "</li>").join("") +
+        "</ol>" +
+        "</div>" +
+        "<div class=\"modal-focus\">" +
+        "<p><strong>Warum das wirkt:</strong> " + exercise.focus + "</p>" +
+        "</div>" +
+        "<div class=\"modal-tip\">" +
+        "Es braucht nicht perfekt zu sein. Dein Koerper versteht schon, dass du dich selbst unterstuetzen moechtest." +
+        "</div>";
+
+      document.getElementById("modalBody").innerHTML = modalBody;
+      document.getElementById("exerciseModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("exerciseModal").classList.remove("active");
+    }
+
+    function unlockPremium() {
+      const code = document.getElementById("unlockCode").value.trim().toUpperCase();
+      const messageDiv = document.getElementById("unlockMessage");
+
+      if (!code) {
+        messageDiv.innerHTML = "<div class=\"error-message\">Bitte gib deinen Code ein.</div>";
+        return;
+      }
+
+      if (code === "PREMIUM123" || code.length === 16) {
+        localStorage.setItem("premiumUnlocked", "true");
+        isPremiumUnlocked = true;
+        messageDiv.innerHTML = "<div class=\"success-message\">Check! Premium freigeschaltet!</div>";
+        document.getElementById("unlockCode").value = "";
+        renderExercises();
+        setTimeout(() => {
+          messageDiv.innerHTML = "";
+        }, 3000);
+      } else {
+        messageDiv.innerHTML = "<div class=\"error-message\">Code nicht erkannt.</div>";
+      }
+    }
+
+    renderExercises();
+
+    document.getElementById("exerciseModal").addEventListener("click", function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
