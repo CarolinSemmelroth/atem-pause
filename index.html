@@ -270,6 +270,70 @@
     .fullscreen-viewer button:hover {
       background: rgba(255,255,255,0.3);
     }
+
+    .quick-selector {
+      background: white;
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .quick-selector h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #7A8E8A;
+      margin-bottom: 1rem;
+    }
+
+    .quick-selector-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .quick-btn {
+      background: #E8F0ED;
+      border: 1px solid #C7A2A8;
+      color: #7A8E8A;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .quick-btn:hover {
+      background: #D4E5E0;
+      border-color: #B8949E;
+    }
+
+    .quick-btn.active {
+      background: #B8949E;
+      color: white;
+      border-color: #B8949E;
+    }
+
+    .reset-filter {
+      display: none;
+      width: 100%;
+      background: #C5A55C;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .reset-filter.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -297,6 +361,21 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
         <h2 style="font-size: 18px; color: #7A8E8A;">Deine Übungen</h2>
         <button onclick="changeCode()" style="background: #E8F0ED; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Code ändern</button>
+      </div>
+
+      <div class="quick-selector" id="quickSelector">
+        <h3>Schnellauswahl – Was brauchst du gerade?</h3>
+        <div class="quick-selector-buttons">
+          <button class="quick-btn" onclick="filterByProblem('reizbarkeit', this)">😤 Reizbarkeit</button>
+          <button class="quick-btn" onclick="filterByProblem('angst', this)">😨 Angst</button>
+          <button class="quick-btn" onclick="filterByProblem('kopfschmerz', this)">🤕 Kopfschmerz</button>
+          <button class="quick-btn" onclick="filterByProblem('ueberreizung', this)">🔊 Überreizung</button>
+          <button class="quick-btn" onclick="filterByProblem('taubheit', this)">🪡 Taubheit</button>
+          <button class="quick-btn" onclick="filterByProblem('konzentration', this)">🧠 Fokus</button>
+          <button class="quick-btn" onclick="filterByProblem('trauer', this)">💔 Trauer</button>
+          <button class="quick-btn" onclick="filterByProblem('schlaf', this)">😴 Schlaf</button>
+        </div>
+        <button class="reset-filter" id="resetFilter" onclick="resetFilter()">Alle Übungen anzeigen</button>
       </div>
 
       <div id="exercisesContainer"></div>
@@ -468,6 +547,20 @@
 
     let allExercises = introExercises;
     let unlockedLevel = 'INTRO';
+    let currentFilter = null;
+    let filteredExercises = [];
+
+    // Problem-zu-Übungen Mapping
+    const problemMapping = {
+      reizbarkeit: [5, 9, 10, 11, 44, 48, 49, 55, 56, 98],
+      angst: [4, 30, 37, 93, 97, 99],
+      kopfschmerz: [5, 13, 18, 22, 23, 25],
+      ueberreizung: [21, 34, 36, 54],
+      taubheit: [38, 39, 40, 41],
+      konzentration: [13, 14, 15, 27, 73, 94, 95],
+      trauer: [47, 52, 53, 56, 72, 74, 111],
+      schlaf: [8, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86]
+    };
 
     function unlockApp() {
       const code = document.getElementById('codeInput').value.toUpperCase().trim();
@@ -551,6 +644,48 @@
       document.getElementById('welcomeScreen').style.display = 'block';
       document.getElementById('appScreen').style.display = 'none';
       document.getElementById('codeInput').value = '';
+    }
+
+    function filterByProblem(problem, button) {
+      currentFilter = problem;
+      filteredExercises = allExercises.filter(ex => problemMapping[problem].includes(ex.id));
+
+      // Button-Styling
+      document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById('resetFilter').classList.add('show');
+
+      renderFilteredExercises();
+    }
+
+    function resetFilter() {
+      currentFilter = null;
+      filteredExercises = [];
+      document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('resetFilter').classList.remove('show');
+      renderExercises();
+    }
+
+    function renderFilteredExercises() {
+      const container = document.getElementById('exercisesContainer');
+      let html = '';
+
+      if (filteredExercises.length === 0) {
+        html = '<p style="text-align: center; color: #B8949E; padding: 2rem 0;">Keine Übungen für diese Situation gefunden.</p>';
+      } else {
+        filteredExercises.forEach(ex => {
+          const isLocked = unlockedLevel === 'INTRO' && ex.id > 12;
+          html += `
+            <div class="exercise-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : `openExercise(${ex.id})`}">
+              <h3>${ex.title}</h3>
+              <p>${ex.category} • ${ex.duration} Min</p>
+              ${isLocked ? '<p style="color: #C85A30;">🔒 Premium</p>' : ''}
+            </div>
+          `;
+        });
+      }
+
+      container.innerHTML = html;
     }
 
     // INIT
