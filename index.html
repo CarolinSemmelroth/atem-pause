@@ -2,91 +2,213 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Somatische Übungen für dein Nervensystem – offline verfügbar.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dein Nervensystem - ATEM-PAUSE</title>
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#7A8E8A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="ATEM-PAUSE">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192'/><text x='96' y='120' font-size='80' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui'>AP</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%237A8E8A' width='180' height='180' rx='40'/><text x='90' y='125' font-size='70' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui'>AP</text></svg>">
-  <title>ATEM-PAUSE – Dein Nervensystem</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #f5f9f8 0%, #faf8f6 100%); color: #5A6B68; min-height: 100vh; display: flex; flex-direction: column; }
-    .app-header { background: white; border-bottom: 1px solid #C7A2A8; padding: 1.5rem 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
-    .app-header h1 { font-size: 22px; font-weight: 500; color: #7A8E8A; margin-bottom: 0.5rem; }
-    .app-header p { font-size: 13px; color: #B8949E; }
-    .container { flex: 1; max-width: 600px; margin: 0 auto; width: 100%; padding: 1rem 1rem 3rem; }
-    
-    .welcome-screen { text-align: center; padding: 80px 20px; }
-    .welcome-screen h2 { font-size: 1.8rem; color: #7A8E8A; margin-bottom: 30px; }
-    .welcome-screen p { font-size: 1rem; color: #5A6B68; margin-bottom: 50px; line-height: 1.8; }
-    
-    .code-input-group { max-width: 400px; margin: 0 auto; }
-    .code-input { width: 100%; padding: 14px; border: 2px solid #C7A2A8; border-radius: 8px; font-size: 16px; margin-bottom: 15px; font-family: monospace; letter-spacing: 2px; }
-    .code-button { width: 100%; padding: 14px; background: #7A8E8A; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .code-button:hover { background: #6a7d7a; }
-    .code-button:active { transform: scale(0.98); }
-    .code-message { margin-top: 20px; font-size: 14px; min-height: 20px; text-align: center; }
-    .error { color: #d32f2f; }
-    .success { color: #7A8E8A; font-weight: 600; }
-    
-    .code-hint { font-size: 12px; color: #B8949E; margin-top: 30px; text-align: center; line-height: 1.6; }
-    .code-hint a { color: #C5A55C; text-decoration: none; font-weight: 500; }
-    .code-hint a:hover { text-decoration: underline; }
-    
-    .exercises-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: rgba(232, 240, 237, 0.5); padding: 1.5rem; border-radius: 12px; }
-    .exercises-header h2 { font-size: 1.3rem; color: #7A8E8A; }
-    .exercise-count { font-size: 2rem; font-weight: 700; color: #C5A55C; }
-    
-    .upgrade-banner { background: linear-gradient(135deg, rgba(197, 165, 92, 0.1), rgba(184, 148, 158, 0.1)); border: 1px solid #C5A55C; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; text-align: center; }
-    .upgrade-banner h3 { font-size: 1.1rem; color: #7A8E8A; margin-bottom: 0.5rem; }
-    .upgrade-banner p { font-size: 0.95rem; color: #5A6B68; margin-bottom: 1rem; line-height: 1.6; }
-    .upgrade-button { display: inline-block; padding: 10px 24px; background: #C5A55C; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
-    .upgrade-button:hover { background: #b8925c; }
-    
-    .section { margin-bottom: 2rem; }
-    .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #7A8E8A; font-weight: 600; margin-bottom: 1rem; }
-    
-    .exercise-card { background: white; border: 1px solid #C7A2A8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.2s; }
-    .exercise-card:hover { background: rgba(232, 240, 237, 0.3); border-color: #B8949E; }
-    .exercise-info h3 { font-size: 15px; font-weight: 500; color: #7A8E8A; margin-bottom: 0.3rem; }
-    .exercise-info p { font-size: 13px; color: #B8949E; }
-    .counter { font-size: 12px; color: #999; margin-top: 10px; text-align: right; }
-    
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; overflow-y: auto; }
-    .modal.active { display: flex; align-items: center; justify-content: center; }
-    .modal-content { background: white; border-radius: 16px; padding: 2rem 1.5rem; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; margin: auto; }
-    .modal-close { float: right; font-size: 24px; color: #B8949E; cursor: pointer; border: none; background: none; font-weight: bold; }
-    .modal-title { font-size: 20px; font-weight: 500; color: #7A8E8A; margin: 1rem 0 0.5rem; clear: both; }
-    .modal-time { font-size: 13px; color: #B8949E; margin-bottom: 1rem; }
-    .modal-description { font-size: 14px; color: #5A6B68; line-height: 1.6; margin-bottom: 1.5rem; }
-    .modal-steps { background: rgba(232, 240, 237, 0.6); border: 1px solid #C7A2A8; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
-    .modal-steps h4 { font-size: 13px; font-weight: 600; color: #7A8E8A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
-    .modal-steps ol { margin-left: 1.5rem; color: #5A6B68; }
-    .modal-steps li { font-size: 13px; line-height: 1.65; margin-bottom: 0.75rem; }
-    .modal-focus { background: rgba(184, 148, 158, 0.08); border-left: 3px solid #B8949E; padding: 1rem; margin-bottom: 1.5rem; }
-    .modal-focus p { font-size: 13px; color: #7A8E8A; line-height: 1.65; margin: 0; }
-    
-    .navigation { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
-    .nav-btn { flex: 1; padding: 12px; background: #7A8E8A; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
-    .nav-btn:hover:not(:disabled) { background: #6a7d7a; }
-    .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    
-    .reset-code { font-size: 12px; text-align: center; margin-top: 20px; }
-    .reset-code button { background: none; border: none; color: #B8949E; cursor: pointer; text-decoration: underline; font-size: 12px; }
-    .reset-code button:hover { color: #7A8E8A; }
-    
-    .install-prompt { background: rgba(197, 165, 92, 0.1); border: 1px solid #C5A55C; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; text-align: center; display: none; }
-    .install-prompt p { font-size: 0.95rem; color: #5A6B68; margin-bottom: 0.8rem; }
-    .install-btn { padding: 10px 20px; background: #C5A55C; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
-    .install-btn:hover { background: #b8925c; }
-    
-    @media (max-width: 600px) {
-      .exercises-header { flex-direction: column; gap: 10px; text-align: center; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #f5f9f8 0%, #faf8f6 100%);
+      color: #5A6B68;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      background: white;
+      border-bottom: 1px solid #C7A2A8;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .app-header h1 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem;
+      padding-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #7A8E8A;
+      font-weight: 600;
+      margin: 2rem 0 1rem 0;
+    }
+
+    .exercise-card {
+      background: white;
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .exercise-card:hover:not(.locked) {
+      background: rgba(232, 240, 237, 0.3);
+      border-color: #B8949E;
+    }
+
+    .exercise-card.locked {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .exercise-card h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.3rem;
+    }
+
+    .exercise-card p {
+      font-size: 13px;
+      color: #B8949E;
+      margin-bottom: 0.5rem;
+    }
+
+    .exercise-meta {
+      font-size: 12px;
+      color: #C5A55C;
+      font-weight: 500;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px 12px 0 0;
+      padding: 2rem 1.5rem;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #7A8E8A;
+      cursor: pointer;
+    }
+
+    .unlock-section {
+      background: rgba(232, 240, 237, 0.5);
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .unlock-input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #C7A2A8;
+      border-radius: 8px;
+      font-size: 14px;
+      margin: 1rem 0;
+      font-family: monospace;
+    }
+
+    .unlock-button {
+      width: 100%;
+      padding: 12px;
+      background: #B8949E;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .unlock-button:hover {
+      background: #A07D89;
+    }
+
+    .upgrade-banner {
+      background: linear-gradient(135deg, rgba(184, 148, 158, 0.1), rgba(197, 165, 92, 0.1));
+      border: 1px solid #C7A2A8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .upgrade-banner h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #7A8E8A;
+      margin-bottom: 0.5rem;
+    }
+
+    .upgrade-banner a {
+      display: inline-block;
+      background: #C5A55C;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -97,227 +219,189 @@
   </div>
 
   <div class="container">
-    <!-- INSTALLATIONSMELDUNG -->
-    <div id="installPrompt" class="install-prompt">
-      <p>📱 Installiere ATEM-PAUSE auf deinem Homescreen – offline verfügbar!</p>
-      <button class="install-btn" onclick="installApp()">Zur App machen</button>
-    </div>
-
-    <!-- WILLKOMMENSEITE MIT CODE-EINGABE -->
-    <div id="welcomeScreen" class="welcome-screen" style="display:none;">
-      <h2>Willkommen zur ATEM-PAUSE</h2>
-      <p>Dein Unlock-Code wurde dir nach dem Kauf per E-Mail zugesendet.<br>Gib ihn hier ein – nur einmalig.</p>
-      
-      <div class="code-input-group">
-        <input type="text" id="unlockCode" class="code-input" placeholder="Code eingeben" />
-        <button class="code-button" onclick="verifyCode()">Freischalten</button>
-        <div id="codeMessage" class="code-message"></div>
-      </div>
-      
-      <div class="code-hint">
-        Du hast noch keinen Code?<br>
-        <a href="https://www.carolinsemmelroth.com/deine-atem-pause" target="_blank">Hier geht's zur App →</a>
+    <div id="welcomeScreen">
+      <div class="unlock-section">
+        <h3>Willkommen bei ATEM-PAUSE</h3>
+        <p style="margin: 1rem 0;">Gib deinen Code ein, um zu starten</p>
+        <input type="text" id="codeInput" class="unlock-input" placeholder="Code eingeben" maxlength="20">
+        <button class="unlock-button" onclick="unlockApp()">Freischalten</button>
+        <p id="codeError" style="color: #C85A30; font-size: 13px; margin-top: 0.5rem;"></p>
+        <p style="font-size: 12px; color: #B8949E; margin-top: 1rem;">
+          <strong>Kein Code?</strong><br>
+          <a href="https://carolinsemmelroth.com/deine-atem-pause" style="color: #C5A55C;">Hier gibt's deine App</a>
+        </p>
       </div>
     </div>
 
-    <!-- ÜBUNGEN-ÜBERSICHT -->
-    <div id="exercisesScreen" style="display:none;">
-      <div class="exercises-header">
-        <div>
-          <h2>Deine Übungen</h2>
-        </div>
-        <div class="exercise-count" id="exerciseCountDisplay">12</div>
+    <div id="appScreen" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
+        <h2 style="font-size: 18px; color: #7A8E8A;">Deine Übungen</h2>
+        <button onclick="changeCode()" style="background: #E8F0ED; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Code ändern</button>
       </div>
-      
-      <!-- UPGRADE-BANNER (nur wenn nicht Premium) -->
-      <div id="upgradeBanner" class="upgrade-banner" style="display:none;">
-        <h3>🚀 Mehr Übungen freischalten</h3>
-        <p>Du hast die INTRO-Version. Upgrade zu PREMIUM und bekomme alle 112 Übungen – speziell für Mamas, Fotografinnen und Frauen.</p>
-        <a href="https://www.carolinsemmelroth.com/shop/atem-pause-upgrade-36" target="_blank" class="upgrade-button">Zu PREMIUM upgraden</a>
-      </div>
-      
-      <div id="exercisesList"></div>
-      
-      <div class="reset-code">
-        <button onclick="resetCode()">Code wechseln</button>
+
+      <div id="exercisesContainer"></div>
+
+      <div class="upgrade-banner" id="upgradeBanner" style="display: none;">
+        <h4>Du hast die INTRO-Version</h4>
+        <p>100+ weitere Übungen warten auf dich – für jeden Moment, den du brauchst.</p>
+        <a href="https://carolinsemmelroth.com/shop/atem-pause-upgrade-36" target="_blank">Zum Upgrade →</a>
       </div>
     </div>
   </div>
 
-  <!-- MODAL FÜR ÜBUNGS-DETAILS -->
-  <div id="exerciseModal" class="modal">
+  <div class="modal" id="modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <div id="modalBody"></div>
-      <div class="navigation">
-        <button class="nav-btn" id="prevBtn" onclick="previousExercise()" style="background:#B8949E;">← Zurück</button>
-        <button class="nav-btn" id="nextBtn" onclick="nextExercise()" style="background:#C5A55C;">Nächste →</button>
+      <img id="modalImage" class="modal-image">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription" style="color: #B8949E; font-size: 13px; margin-bottom: 1rem;"></p>
       </div>
+      <div id="modalDetails" style="font-size: 13px; color: #5A6B68; line-height: 1.6;"></div>
     </div>
   </div>
 
   <script>
-    const exercises = {
-      intro: [
-        {id:"erdung", title:"Erdung – mit beiden Füßen ankommen", time:3, desc:"Wenn alles in dir brodelt - diese Übung erinnert dich: Du stehst auf festem Grund.", image:"01-erdung.png", steps:[], focus:"Wenn du verwurzelt bist, kann Reizbarkeit nicht hochfahren. Dein Körper beruhigt sich von selbst."},
-        {id:"box", title:"Box Breathing – der 4-4-4-4 Rhythmus", time:3, desc:"Wenn dein Herz rast - dieser Atem-Rhythmus verlangsamt es wie ein Zauber.", image:"02-box-breathing.png", steps:[], focus:"Schneller Atem = schnelles Herz. Das ist Angst. Langsamer Atem = Sicherheit. Dein Atem ist dein Regler."},
-        {id:"sinne", title:"Die 5 Sinne – Jetzt-Verankerung", time:5, desc:"Dein wirbeliger Kopf lebt in Zukunftsängsten. Diese Übung klebt dich wieder an die Gegenwart.", image:"03-5-sinne.png", steps:[], focus:"Die Unruhe lebt in Übermorgen. Die 5 Sinne bringen dich ins JETZT und dort bist du sicher."},
-        {id:"universal", title:"Erdungs-Atemzug – die Universal-Übung", time:2, desc:"Kurz, kraftvoll und sofort wirksam - wenn zu viel ist, fängt man hier an.", image:"04-erdungs-atemzug.png", steps:[], focus:"Wenn zu viel passiert, brauchst du zuerst Platz zum Atmen. Diese Übung schafft diesen Platz."},
-        {id:"schulter", title:"Schulter-Puls – Spannung lösen", time:4, desc:"Hinter Kopfschmerzen steckt oft Nackenverspannung. Diese Übung löst sie sanft.", image:"05-schulter-puls.png", steps:[], focus:"Deine Schultern halten Spannung fest. Wenn du sie anspannst und loslässt, merkst du: Es ist möglich."},
-        {id:"gegenpol", title:"Gegenpol-Berührung – Erwachen", time:3, desc:"Wenn Teile deines Körpers taub wirken - diese Übung bringt Gefühl zurück.", image:"06-gegenpol-beruehrung.png", steps:[], focus:"Taubheit sagt: Ich traue mich nicht zu fühlen. Sanfte Berührung antwortet: Es ist sicher."},
-        {id:"gewicht", title:"Gewicht abgeben", time:4, desc:"Lass dein Gewicht sinken und finde Erdung in der Schwerkraft.", image:"07-gewicht-abgeben.png", steps:[], focus:"Schwerkraft ist dein Freund. Wenn du dein Gewicht loslässt, lässt dein Körper auch los."},
-        {id:"anspannen-neu", title:"Anspannen & Loslassen", time:5, desc:"Der Klassiker: erst sammeln, dann freigeben.", image:"08-anspannen-loslassen.png", steps:[], focus:"Dein Körper versteht diesen Dialog: Anspannung - dann Loslassen."},
-        {id:"koerperscan", title:"Achtsamer Körperscan", time:6, desc:"Reise durch deinen Körper und werde wieder ganz präsent.", image:"09-achtsamer-koerperscan.png", steps:[], focus:"Wenn du deinen Körper bewusst spürst, kann Dissoziation nicht bleiben."},
-        {id:"dankbarkeit", title:"Dankbarkeits-Moment", time:3, desc:"Kleine Pausen für tiefe Dankbarkeit – das ist Nervensystem-Magie.", image:"10-dankbarkeits-moment.png", steps:[], focus:"Dankbarkeit schaltet deinen Vagusnerv an – sofort."},
-        {id:"atemanker", title:"Atemanker im Alltag", time:2, desc:"Ein schneller Anker für stressige Momente – überall, jederzeit.", image:"11-atemanker-im-alltag.png", steps:[], focus:"Ein Atemzug kann alles verändern."},
-        {id:"ruhe", title:"Innere Ruhe finden", time:5, desc:"Der finale Schlüssel: Stille in dir selbst entdecken.", image:"12-innere-ruhe-finden.png", steps:[], focus:"Ruhe ist nicht das Fehlen von Lärm. Ruhe ist dein natürlicher Zustand."}
-      ],
-      premium: []
-    };
+    // INTRO ÜBUNGEN (12)
+    const introExercises = [
+      { id: 1, title: '01 Erdung – mit beiden Füßen ankommen', file: '01-erdung.png', duration: 3, category: 'Basis' },
+      { id: 2, title: '02 Box Breathing – der 4-4-4-4 Rhythmus', file: '02-box-breathing.png', duration: 3, category: 'Atem' },
+      { id: 3, title: '03 Die 5 Sinne – Jetzt-Verankerung', file: '03-5-sinne.png', duration: 5, category: 'Erdung' },
+      { id: 4, title: '04 Erdungs-Atemzug – die Universal-Übung', file: '04-erdungs-atemzug.png', duration: 2, category: 'Basis' },
+      { id: 5, title: '05 Schulter-Puls – Spannung lösen', file: '05-schulter-puls.png', duration: 4, category: 'Körper' },
+      { id: 6, title: '06 Gegenpol-Berührung – Erwachen', file: '06-gegenpol-beruehrung.png', duration: 3, category: 'Körper' },
+      { id: 7, title: '07 Anspannen & Loslassen', file: '07-anspannen-loslassen.png', duration: 5, category: 'Körper' },
+      { id: 8, title: '08 4-7-8 Atem – der Einschlaf-Trick', file: '08-4-7-8-atem.png', duration: 3, category: 'Schlaf' },
+      { id: 9, title: '09 Sanfte Bewegung – wieder lebendig', file: '09-sanfte-bewegung.png', duration: 4, category: 'Körper' },
+      { id: 10, title: '10 Vagal Summen – Ruhe-Signal', file: '10-vagal-summen.png', duration: 3, category: 'Atem' },
+      { id: 11, title: '11 Mama-Moment – Geduld zurückgewinnen', file: '11-mama-moment.png', duration: 2, category: 'Alltag' },
+      { id: 12, title: '12 Fotografin-Mut – Kamera-Selbstbewusstsein', file: '12-fotografin-mut.png', duration: 3, category: 'Kraft' }
+    ];
 
-    let currentExerciseIndex = 0;
-    let currentExercises = [];
-    let isIntro = false;
-    let deferredPrompt;
+    // PREMIUM ÜBUNGEN (100) - SCAFFOLD
+    const premiumExercises = [
+      { id: 13, title: '13 Mein Kopf dreht sich – Fokus-Ankern', file: '13-fokus-ankern.png', duration: 4, category: 'Welt 1' },
+      { id: 14, title: '14 Gedanken-Stopp – das Reset-Signal', file: '14-gedanken-stopp.png', duration: 2, category: 'Welt 1' },
+      // ... (continue for all 100)
+      // Scaffold-Struktur: Alle 100 mit Dateinamen aus Notion
+      { id: 112, title: '112 Nacht-Ruhe', file: '112-nacht-ruhe.png', duration: 8, category: 'Welt 8' }
+    ];
 
-    // Service Worker registrieren (optional – App funktioniert auch ohne)
-    if ("serviceWorker" in navigator && location.protocol === "https:") {
-      navigator.serviceWorker.register("service-worker.js").catch(err => {
-        // Fehler sind okay – App lädt auch ohne Service Worker
-      });
+    // LAZY LOAD: Premium-Übungen generieren aus Dateinamen
+    function generatePremiumScaffold() {
+      const premiumData = [
+        { id: 13, file: '13-fokus-ankern.png' },
+        { id: 14, file: '14-gedanken-stopp.png' },
+        { id: 15, file: '15-konzentrations-atem.png' },
+        // ... (alle 100 mit Dateinamen)
+        { id: 112, file: '112-nacht-ruhe.png' }
+      ];
+      
+      return premiumData.map((ex, idx) => ({
+        id: ex.id,
+        title: `Übung ${ex.id}`,
+        file: ex.file,
+        duration: 3,
+        category: 'Premium'
+      }));
     }
 
-    // Install-Prompt abfangen
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById("installPrompt").style.display = "block";
-    });
+    let allExercises = introExercises;
+    let unlockedLevel = 'INTRO';
 
-    function installApp() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === "accepted") {
-            document.getElementById("installPrompt").style.display = "none";
-          }
-          deferredPrompt = null;
-        });
-      }
-    }
-
-    function initApp() {
-      const storedCode = localStorage.getItem("atem_unlock_code");
-      if (storedCode) {
-        loadExercises(storedCode);
+    function unlockApp() {
+      const code = document.getElementById('codeInput').value.toUpperCase().trim();
+      const errorEl = document.getElementById('codeError');
+      
+      if (code === 'INTRO2024') {
+        unlockedLevel = 'INTRO';
+        localStorage.setItem('atem_unlock_code', code);
+        showApp();
+      } else if (code === 'PRO2026') {
+        unlockedLevel = 'PREMIUM';
+        allExercises = [...introExercises, ...generatePremiumScaffold()];
+        localStorage.setItem('atem_unlock_code', code);
+        showApp();
       } else {
-        document.getElementById("welcomeScreen").style.display = "block";
-        document.getElementById("exercisesScreen").style.display = "none";
+        errorEl.textContent = 'Code nicht erkannt. Versuche es nochmal.';
       }
     }
 
-    function verifyCode() {
-      const code = document.getElementById("unlockCode").value.trim().toUpperCase();
-      const messageDiv = document.getElementById("codeMessage");
-      if (!code) {
-        messageDiv.innerHTML = "<div class=\"error\">Bitte gib deinen Code ein.</div>";
-        return;
-      }
-
-      let isValid = false;
-      if (code === "INTRO2024") {
-        isValid = true;
-        isIntro = true;
-      } else if (code === "PRO2026") {
-        isValid = true;
-        isIntro = false;
-      }
-
-      if (isValid) {
-        localStorage.setItem("atem_unlock_code", code);
-        messageDiv.innerHTML = "<div class=\"success\">✓ Freigeschalten! Viel Kraft für dich!</div>";
-        setTimeout(() => {
-          loadExercises(code);
-        }, 1000);
-      } else {
-        messageDiv.innerHTML = "<div class=\"error\">❌ Code nicht erkannt. Bitte überprüfen.</div>";
-      }
-    }
-
-    function loadExercises(code) {
-      if (code === "INTRO2024") {
-        currentExercises = exercises.intro;
-        isIntro = true;
-      } else if (code === "PRO2026") {
-        currentExercises = exercises.intro.concat(exercises.premium);
-        isIntro = false;
-      }
-
-      document.getElementById("welcomeScreen").style.display = "none";
-      document.getElementById("exercisesScreen").style.display = "block";
-      document.getElementById("exerciseCountDisplay").textContent = currentExercises.length;
-
-      if (isIntro) {
-        document.getElementById("upgradeBanner").style.display = "block";
-      } else {
-        document.getElementById("upgradeBanner").style.display = "none";
-      }
-
+    function showApp() {
+      document.getElementById('welcomeScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'block';
+      document.getElementById('upgradeBanner').style.display = unlockedLevel === 'INTRO' ? 'block' : 'none';
       renderExercises();
     }
 
     function renderExercises() {
-      const list = document.getElementById("exercisesList");
-      let html = "<div class=\"section\"><div class=\"section-title\">✨ Deine Übungen</div>";
-      currentExercises.forEach((ex, idx) => {
-        html += "<div class=\"exercise-card\" onclick=\"openModal(" + idx + ")\"><div class=\"exercise-info\"><h3>" + ex.title + "</h3><p>⏱ " + ex.time + " Minuten</p></div><div class=\"counter\">" + (idx+1) + " / " + currentExercises.length + "</div></div>";
+      const container = document.getElementById('exercisesContainer');
+      let html = '';
+
+      allExercises.forEach(ex => {
+        const isLocked = unlockedLevel === 'INTRO' && ex.id > 12;
+        html += `
+          <div class="exercise-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : `openExercise(${ex.id})`}">
+            <h3>${ex.title}</h3>
+            <p>${ex.category} • ${ex.duration} Min</p>
+            ${isLocked ? '<p style="color: #C85A30;">🔒 Premium</p>' : ''}
+          </div>
+        `;
       });
-      html += "</div>";
-      list.innerHTML = html;
+
+      container.innerHTML = html;
     }
 
-    function openModal(index) {
-      currentExerciseIndex = index;
-      const ex = currentExercises[index];
-      let stepsHtml = "";
-      if (ex.steps && ex.steps.length > 0) {
-        ex.steps.forEach(step => { stepsHtml += "<li>" + step + "</li>"; });
-        stepsHtml = "<div class=\"modal-steps\"><h4>So geht's:</h4><ol>" + stepsHtml + "</ol></div>";
-      }
-      const modalBody = document.getElementById("modalBody");
-      const imageHtml = ex.image ? "<img src='/public/images/exercises/" + ex.image + "' style='width:100%; max-width:400px; height:auto; border-radius:12px; margin-bottom:1.5rem; display:block;' alt='" + ex.title + "'>" : "";
-      modalBody.innerHTML = "<button class=\"modal-close\" onclick=\"closeModal()\">✕</button>" + imageHtml + "<h3 class=\"modal-title\">" + ex.title + "</h3><div class=\"modal-time\">⏱ " + ex.time + " Minuten</div><p class=\"modal-description\">" + ex.desc + "</p>" + stepsHtml + "<div class=\"modal-focus\"><p><strong>Warum das wirkt:</strong> " + ex.focus + "</p></div><div style=\"font-size:0.85rem;color:#999;text-align:center;margin-top:20px;\">Übung " + (currentExerciseIndex+1) + " von " + currentExercises.length + "</div>";
-      document.getElementById("prevBtn").disabled = currentExerciseIndex === 0;
-      document.getElementById("nextBtn").disabled = currentExerciseIndex === currentExercises.length - 1;
-      document.getElementById("exerciseModal").classList.add("active");
+    function openExercise(id) {
+      const ex = allExercises.find(e => e.id === id);
+      if (!ex) return;
+
+      document.getElementById('modalTitle').textContent = ex.title;
+      document.getElementById('modalDescription').textContent = `${ex.category} • ${ex.duration} Minuten`;
+      document.getElementById('modalImage').src = `/public/images/exercises/${ex.file}`;
+      document.getElementById('modalDetails').innerHTML = `<p>Folge den Anweisungen auf dem Bild. ${ex.duration} Minuten für dich selbst.</p>`;
+      document.getElementById('modal').classList.add('active');
     }
 
     function closeModal() {
-      document.getElementById("exerciseModal").classList.remove("active");
+      document.getElementById('modal').classList.remove('active');
     }
 
-    function previousExercise() {
-      if (currentExerciseIndex > 0) openModal(currentExerciseIndex - 1);
+    function changeCode() {
+      localStorage.removeItem('atem_unlock_code');
+      document.getElementById('welcomeScreen').style.display = 'block';
+      document.getElementById('appScreen').style.display = 'none';
+      document.getElementById('codeInput').value = '';
     }
 
-    function nextExercise() {
-      if (currentExerciseIndex < currentExercises.length - 1) openModal(currentExerciseIndex + 1);
-    }
-
-    function resetCode() {
-      if (confirm("Möchtest du den Code wechseln? Alle freigeschalteten Übungen werden zurückgesetzt.")) {
-        localStorage.removeItem("atem_unlock_code");
-        document.getElementById("welcomeScreen").style.display = "block";
-        document.getElementById("exercisesScreen").style.display = "none";
-        document.getElementById("unlockCode").value = "";
-        document.getElementById("codeMessage").textContent = "";
+    // INIT
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('atem_unlock_code');
+      if (saved) {
+        if (saved === 'INTRO2024') {
+          unlockedLevel = 'INTRO';
+          showApp();
+        } else if (saved === 'PRO2026') {
+          unlockedLevel = 'PREMIUM';
+          allExercises = [...introExercises, ...generatePremiumScaffold()];
+          showApp();
+        }
       }
+    });
+
+    // PWA: Service Worker
+    if ('serviceWorker' in navigator && location.protocol === 'https:') {
+      navigator.serviceWorker.register('/service-worker.js').catch(e => console.log('SW:', e.message));
     }
 
-    window.addEventListener("load", initApp);
-
-    document.getElementById("exerciseModal").addEventListener("click", e => {
-      if (e.target.id === "exerciseModal") closeModal();
+    // PWA: Install Prompt
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      const btn = document.createElement('button');
+      btn.textContent = '📱 Zur Startseite hinzufügen';
+      btn.style.cssText = 'padding:10px 16px; background:#C5A55C; color:white; border:none; border-radius:6px; cursor:pointer; font-size:13px; margin:1rem 0;';
+      btn.onclick = () => e.prompt();
+      document.querySelector('.app-header').appendChild(btn);
     });
   </script>
 </body>
