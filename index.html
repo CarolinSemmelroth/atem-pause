@@ -23,7 +23,7 @@
     .app-header {
       background: white;
       border-bottom: 1px solid #C7A2A8;
-      padding: 1.5rem 1rem;
+      padding: 1rem;
       text-align: center;
       position: sticky;
       top: 0;
@@ -35,7 +35,39 @@
       font-size: 22px;
       font-weight: 500;
       color: #7A8E8A;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .app-header p {
+      font-size: 13px;
+      color: #B8949E;
+      margin-bottom: 1rem;
+    }
+
+    .install-button-container {
+      margin: 0.5rem 0;
+    }
+
+    .install-button {
+      background: linear-gradient(135deg, #C5A55C 0%, #B89D52 100%);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+
+    .install-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(197, 165, 92, 0.3);
+    }
+
+    .install-button:active {
+      transform: translateY(0);
     }
 
     .container {
@@ -179,10 +211,15 @@
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .unlock-button:hover {
       background: #A07D89;
+    }
+
+    .unlock-button:active {
+      transform: scale(0.98);
     }
 
     .upgrade-banner {
@@ -209,6 +246,32 @@
       border-radius: 8px;
       text-decoration: none;
       margin-top: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .upgrade-banner a:hover {
+      background: #B89D52;
+      transform: translateY(-2px);
+    }
+
+    .pricing-info {
+      font-size: 12px;
+      color: #B8949E;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    .info-text {
+      font-size: 12px;
+      color: #B8949E;
+      margin-top: 1rem;
+      line-height: 1.5;
+    }
+
+    .info-text a {
+      color: #C5A55C;
+      text-decoration: none;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -216,6 +279,12 @@
   <div class="app-header">
     <h1>Dein Nervensystem</h1>
     <p>Somatische Übungen für Ruhe & Kraft</p>
+    <div class="install-button-container" id="installContainer" style="display: none;">
+      <button class="install-button" id="installButton" onclick="handleInstallClick()">
+        📱 App installieren
+      </button>
+      <p class="info-text">Nutze die App offline auf deinem Handy & PC</p>
+    </div>
   </div>
 
   <div class="container">
@@ -226,9 +295,9 @@
         <input type="text" id="codeInput" class="unlock-input" placeholder="Code eingeben" maxlength="20">
         <button class="unlock-button" onclick="unlockApp()">Freischalten</button>
         <p id="codeError" style="color: #C85A30; font-size: 13px; margin-top: 0.5rem;"></p>
-        <p style="font-size: 12px; color: #B8949E; margin-top: 1rem;">
-          <strong>Kein Code?</strong><br>
-          <a href="https://carolinsemmelroth.com/deine-atem-pause" style="color: #C5A55C;">Hier gibt's deine App</a>
+        <p class="info-text">
+          <strong>Du hast noch keinen Code?</strong><br>
+          <a href="https://carolinsemmelroth.com/deine-atem-pause" target="_blank">Hier erhältst du deinen Zugang</a>
         </p>
       </div>
     </div>
@@ -236,7 +305,7 @@
     <div id="appScreen" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
         <h2 style="font-size: 18px; color: #7A8E8A;">Deine Übungen</h2>
-        <button onclick="changeCode()" style="background: #E8F0ED; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Code ändern</button>
+        <button onclick="changeCode()" style="background: #E8F0ED; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">Code ändern</button>
       </div>
 
       <div id="exercisesContainer"></div>
@@ -252,7 +321,7 @@
   <div class="modal" id="modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <img id="modalImage" class="modal-image">
+      <img id="modalImage" class="modal-image" alt="Übungsanleitung">
       <div class="modal-header">
         <h2 id="modalTitle"></h2>
         <p id="modalDescription" style="color: #B8949E; font-size: 13px; margin-bottom: 1rem;"></p>
@@ -282,8 +351,6 @@
     const premiumExercises = [
       { id: 13, title: '13 Mein Kopf dreht sich – Fokus-Ankern', file: '13-fokus-ankern.png', duration: 4, category: 'Welt 1' },
       { id: 14, title: '14 Gedanken-Stopp – das Reset-Signal', file: '14-gedanken-stopp.png', duration: 2, category: 'Welt 1' },
-      // ... (continue for all 100)
-      // Scaffold-Struktur: Alle 100 mit Dateinamen aus Notion
       { id: 112, title: '112 Nacht-Ruhe', file: '112-nacht-ruhe.png', duration: 8, category: 'Welt 8' }
     ];
 
@@ -293,10 +360,9 @@
         { id: 13, file: '13-fokus-ankern.png' },
         { id: 14, file: '14-gedanken-stopp.png' },
         { id: 15, file: '15-konzentrations-atem.png' },
-        // ... (alle 100 mit Dateinamen)
         { id: 112, file: '112-nacht-ruhe.png' }
       ];
-      
+
       return premiumData.map((ex, idx) => ({
         id: ex.id,
         title: `Übung ${ex.id}`,
@@ -308,11 +374,12 @@
 
     let allExercises = introExercises;
     let unlockedLevel = 'INTRO';
+    let deferredPrompt = null;
 
     function unlockApp() {
       const code = document.getElementById('codeInput').value.toUpperCase().trim();
       const errorEl = document.getElementById('codeError');
-      
+
       if (code === 'INTRO2024') {
         unlockedLevel = 'INTRO';
         localStorage.setItem('atem_unlock_code', code);
@@ -323,7 +390,7 @@
         localStorage.setItem('atem_unlock_code', code);
         showApp();
       } else {
-        errorEl.textContent = 'Code nicht erkannt. Versuche es nochmal.';
+        errorEl.textContent = 'Code nicht erkannt. Überprüfe die Schreibweise und versuche es nochmal.';
       }
     }
 
@@ -331,6 +398,12 @@
       document.getElementById('welcomeScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       document.getElementById('upgradeBanner').style.display = unlockedLevel === 'INTRO' ? 'block' : 'none';
+
+      // Install-Button anzeigen
+      if (deferredPrompt) {
+        document.getElementById('installContainer').style.display = 'block';
+      }
+
       renderExercises();
     }
 
@@ -344,7 +417,7 @@
           <div class="exercise-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : `openExercise(${ex.id})`}">
             <h3>${ex.title}</h3>
             <p>${ex.category} • ${ex.duration} Min</p>
-            ${isLocked ? '<p style="color: #C85A30;">🔒 Premium</p>' : ''}
+            ${isLocked ? '<p style="color: #C85A30; font-weight: 500;">🔒 Premium-Übung</p>' : ''}
           </div>
         `;
       });
@@ -372,6 +445,20 @@
       document.getElementById('welcomeScreen').style.display = 'block';
       document.getElementById('appScreen').style.display = 'none';
       document.getElementById('codeInput').value = '';
+      document.getElementById('codeError').textContent = '';
+    }
+
+    function handleInstallClick() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('App installiert!');
+          }
+          deferredPrompt = null;
+          document.getElementById('installContainer').style.display = 'none';
+        });
+      }
     }
 
     // INIT
@@ -387,21 +474,39 @@
           showApp();
         }
       }
+
+      // PWA: beforeinstallprompt Event
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Zeige Install-Button, wenn App-Screen aktiv ist
+        if (document.getElementById('appScreen').style.display !== 'none') {
+          document.getElementById('installContainer').style.display = 'block';
+        }
+      });
+
+      // PWA: appinstalled Event
+      window.addEventListener('appinstalled', () => {
+        console.log('ATEM-PAUSE app wurde installiert!');
+        deferredPrompt = null;
+        document.getElementById('installContainer').style.display = 'none';
+      });
+
+      // PWA: Service Worker
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        navigator.serviceWorker.register('/service-worker.js').catch(e => console.log('Service Worker:', e.message));
+      }
     });
 
-    // PWA: Service Worker
-    if ('serviceWorker' in navigator && location.protocol === 'https:') {
-      navigator.serviceWorker.register('/service-worker.js').catch(e => console.log('SW:', e.message));
-    }
-
-    // PWA: Install Prompt
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault();
-      const btn = document.createElement('button');
-      btn.textContent = '📱 Zur Startseite hinzufügen';
-      btn.style.cssText = 'padding:10px 16px; background:#C5A55C; color:white; border:none; border-radius:6px; cursor:pointer; font-size:13px; margin:1rem 0;';
-      btn.onclick = () => e.prompt();
-      document.querySelector('.app-header').appendChild(btn);
+    // Fallback: Install-Button anzeigen, auch wenn beforeinstallprompt nicht funktioniert
+    window.addEventListener('load', () => {
+      // Zeige Button auf Mobil-Geräten auch ohne beforeinstallprompt
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        if (document.getElementById('appScreen').style.display !== 'none' && !deferredPrompt) {
+          document.getElementById('installButton').textContent = '📱 Zum Homescreen hinzufügen';
+          document.getElementById('installContainer').style.display = 'block';
+        }
+      }
     });
   </script>
 </body>
