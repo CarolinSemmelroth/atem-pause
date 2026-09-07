@@ -1,4 +1,4 @@
-const CACHE_NAME = "atem-pause-v1";
+const CACHE_NAME = "atem-pause-v2";
 const urlsToCache = [
   "/",
   "/index.html",
