@@ -224,6 +224,54 @@
       text-decoration: none;
       margin-top: 1rem;
     }
+
+    .fullscreen-viewer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fullscreen-viewer.active {
+      display: flex;
+    }
+
+    .fullscreen-viewer img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
+    }
+
+    .fullscreen-viewer button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fullscreen-viewer button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .modal-image {
+      cursor: zoom-in;
+    }
   </style>
 </head>
 <body>
@@ -266,13 +314,18 @@
   <div class="modal" id="modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <img id="modalImage" class="modal-image">
+      <img id="modalImage" class="modal-image" onclick="openFullscreen(event)">
       <div class="modal-header">
         <h2 id="modalTitle"></h2>
         <p id="modalDescription" style="color: #B8949E; font-size: 13px; margin-bottom: 1rem;"></p>
       </div>
       <div id="modalDetails" style="font-size: 13px; color: #5A6B68; line-height: 1.6;"></div>
     </div>
+  </div>
+
+  <div class="fullscreen-viewer" id="fullscreenViewer">
+    <button onclick="closeFullscreen()">✕</button>
+    <img id="fullscreenImage">
   </div>
 
   <script>
@@ -380,6 +433,24 @@
     function closeModal() {
       document.getElementById('modal').classList.remove('active');
     }
+
+    function openFullscreen(event) {
+      const img = document.getElementById('modalImage');
+      const fullscreenImg = document.getElementById('fullscreenImage');
+      fullscreenImg.src = img.src;
+      document.getElementById('fullscreenViewer').classList.add('active');
+    }
+
+    function closeFullscreen() {
+      document.getElementById('fullscreenViewer').classList.remove('active');
+    }
+
+    // ESC zum Schließen
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeFullscreen();
+      }
+    });
 
     function changeCode() {
       localStorage.removeItem('atem_unlock_code');
