@@ -130,6 +130,8 @@
       object-fit: contain;
       border-radius: 8px;
       margin-bottom: 1.5rem;
+      cursor: zoom-in;
+      display: block;
     }
 
     .modal-header h2 {
@@ -267,10 +269,6 @@
 
     .fullscreen-viewer button:hover {
       background: rgba(255,255,255,0.3);
-    }
-
-    .modal-image {
-      cursor: zoom-in;
     }
   </style>
 </head>
@@ -435,6 +433,7 @@
     }
 
     function openFullscreen(event) {
+      event.stopPropagation();
       const img = document.getElementById('modalImage');
       const fullscreenImg = document.getElementById('fullscreenImage');
       fullscreenImg.src = img.src;
