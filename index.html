@@ -358,7 +358,7 @@
 
       document.getElementById('modalTitle').textContent = ex.title;
       document.getElementById('modalDescription').textContent = `${ex.category} • ${ex.duration} Minuten`;
-      document.getElementById('modalImage').src = `/images/exercises/${ex.file}`;
+      document.getElementById('modalImage').src = `/public/images/exercises/${ex.file}`;
       document.getElementById('modalDetails').innerHTML = `<p>Folge den Anweisungen auf dem Bild. ${ex.duration} Minuten für dich selbst.</p>`;
       document.getElementById('modal').classList.add('active');
     }
