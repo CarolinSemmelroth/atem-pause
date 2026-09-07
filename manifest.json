@@ -1,55 +1,34 @@
 {
   "name": "ATEM-PAUSE – Dein Nervensystem",
   "short_name": "ATEM-PAUSE",
-  "description": "Somatische Übungen für dein Nervensystem – offline verfügbar. Erdung, Atemtechniken und Körperübungen von Caro für Mamas, Fotografinnen und alle Frauen.",
+  "description": "Somatische Übungen für Ruhe & Kraft – 12 kostenlose Intro + 100+ Premium Übungen für dein Nervensystem",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
   "theme_color": "#7A8E8A",
+  "background_color": "#faf8f6",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192'/><text x='96' y='140' font-size='90' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui, -apple-system'>AP</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold' font-family='system-ui'>🫁</text></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%237A8E8A' width='512' height='512'/><text x='256' y='380' font-size='240' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui, -apple-system'>AP</text></svg>",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192' rx='45'/><text x='96' y='140' font-size='90' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui, -apple-system'>AP</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237A8E8A' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='white' text-anchor='middle' dominant-baseline='middle' font-weight='bold' font-family='system-ui'>🫁</text></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "maskable"
     }
   ],
-  "categories": ["health", "lifestyle"],
+  "categories": ["health", "wellness", "medical"],
   "screenshots": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%23f5f9f8' width='540' height='720'/><rect fill='white' y='0' width='540' height='80' /><text x='270' y='50' font-size='28' font-weight='bold' fill='%237A8E8A' text-anchor='middle' font-family='system-ui'>Dein Nervensystem</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%23f9f8f6' width='540' height='720'/><rect fill='%237A8E8A' y='0' width='540' height='60'/><text x='270' y='35' font-size='24' fill='white' text-anchor='middle' font-weight='bold' font-family='system-ui'>ATEM-PAUSE</text></svg>",
       "sizes": "540x720",
       "type": "image/svg+xml",
       "form_factor": "narrow"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Neue Übung",
-      "short_name": "Übung",
-      "description": "Öffne eine neue Übung",
-      "url": "/?focus=exercise",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%237A8E8A' width='96' height='96'/><text x='48' y='70' font-size='45' font-weight='bold' fill='white' text-anchor='middle' font-family='system-ui'>✓</text></svg>",
-          "sizes": "96x96",
-          "type": "image/svg+xml"
-        }
-      ]
     }
   ]
 }
