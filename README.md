@@ -86,13 +86,13 @@ Atem-Pause/
 
 - **Live-App:** [atem-pause.vercel.app](https://atem-pause.vercel.app)
 - **Shop & Codes:** [carolin-semmelroth.odoo.com](https://carolin-semmelroth.odoo.com/)
-- **Deine Website:** [carolin-semmelroth.de](https://carolin-semmelroth.de/)
+- **Deine Website:** [carolinsemmelroth.com](https://carolinsemmelroth.com/)
 
 ---
 
 ## 💭 Wer hat ATEM-PAUSE gebaut?
 
-Von **Caro Semmelroth** – Fotografin, Mama, Sternenmama und Herzens-Unternehmerin.
+Von **Carolin Semmelroth** – Fotografin, Mama, Sternenmama und Herzens-Unternehmerin.
 
 Die App ist inspiriert von somatischen Praktiken für Nervensystem-Regulation und wurde speziell für Frauen entwickelt, die mit Stress, Reizbarkeit und Erschöpfung kämpfen.
 
@@ -110,8 +110,8 @@ Die App ist inspiriert von somatischen Praktiken für Nervensystem-Regulation un
 
 ## ❓ Fragen?
 
-**E-Mail:** [info@carolin-semmelroth.de](mailto:info@carolin-semmelroth.de)  
-**Instagram:** [@carissima.fotografin](https://instagram.com/carissima.fotografin)
+**E-Mail:** [buecher@pippilotta-photoart.de](mailto:buecher@pippilotta-photoart.de)  
+**Instagram:** [@carolin.semmelroth] (https://www.instagram.com/carolin.semmelroth/)
 
 ---
 
