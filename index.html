@@ -296,7 +296,7 @@
         // ... (alle 100 mit Dateinamen)
         { id: 112, file: '112-nacht-ruhe.png' }
       ];
-      
+
       return premiumData.map((ex, idx) => ({
         id: ex.id,
         title: `Übung ${ex.id}`,
@@ -312,7 +312,7 @@
     function unlockApp() {
       const code = document.getElementById('codeInput').value.toUpperCase().trim();
       const errorEl = document.getElementById('codeError');
-      
+
       if (code === 'INTRO2024') {
         unlockedLevel = 'INTRO';
         localStorage.setItem('atem_unlock_code', code);
