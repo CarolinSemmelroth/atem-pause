@@ -143,11 +143,25 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
-      background: none;
+      background: rgba(232, 240, 237, 0.8);
       border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       font-size: 24px;
       color: #7A8E8A;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(197, 165, 92, 0.2);
+      color: #5A6B68;
+      transform: scale(1.1);
     }
 
     .unlock-section {
