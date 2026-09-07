@@ -2,10 +2,15 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dein Nervensystem - ATEM-PAUSE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ATEM-PAUSE">
+  <title>ATEM-PAUSE – Dein Nervensystem</title>
   <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%237A8E8A' width='100' height='100'/><text x='50' y='60' font-size='70' text-anchor='middle' font-family='system-ui'>🫁</text></svg>">
   <meta name="theme-color" content="#7A8E8A">
+
   <style>
     * {
       margin: 0;
@@ -13,205 +18,94 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --teal: #7A8E8A;
+      --mauve: #B8949E;
+      --gold: #C5A55C;
+      --cream: #f9f8f6;
+      --bg: #f5f9f8;
+      --text-dark: #5A6B68;
+      --text-light: #B8949E;
+      --border: #C7A2A8;
+      --error: #C85A30;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #f5f9f8 0%, #faf8f6 100%);
-      color: #5A6B68;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--cream) 100%);
+      color: var(--text-dark);
       min-height: 100vh;
+      padding-bottom: 2rem;
     }
 
     .app-header {
       background: white;
-      border-bottom: 1px solid #C7A2A8;
-      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1rem;
       text-align: center;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 90;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     .app-header h1 {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 500;
-      color: #7A8E8A;
-      margin-bottom: 0.3rem;
+      color: var(--teal);
+      margin-bottom: 0.25rem;
     }
 
     .app-header p {
-      font-size: 13px;
-      color: #B8949E;
-      margin-bottom: 1rem;
-    }
-
-    .install-button-container {
-      margin: 0.5rem 0;
-    }
-
-    .install-button {
-      background: linear-gradient(135deg, #C5A55C 0%, #B89D52 100%);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-block;
-    }
-
-    .install-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(197, 165, 92, 0.3);
-    }
-
-    .install-button:active {
-      transform: translateY(0);
+      font-size: 12px;
+      color: var(--text-light);
     }
 
     .container {
       max-width: 600px;
       margin: 0 auto;
       padding: 1rem;
-      padding-bottom: 3rem;
     }
 
-    .section-title {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #7A8E8A;
-      font-weight: 600;
-      margin: 2rem 0 1rem 0;
-    }
-
-    .exercise-card {
-      background: white;
-      border: 1px solid #C7A2A8;
-      border-radius: 12px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .exercise-card:hover:not(.locked) {
-      background: rgba(232, 240, 237, 0.3);
-      border-color: #B8949E;
-    }
-
-    .exercise-card.locked {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .exercise-card h3 {
-      font-size: 15px;
-      font-weight: 500;
-      color: #7A8E8A;
-      margin-bottom: 0.3rem;
-    }
-
-    .exercise-card p {
-      font-size: 13px;
-      color: #B8949E;
-      margin-bottom: 0.5rem;
-    }
-
-    .exercise-meta {
-      font-size: 12px;
-      color: #C5A55C;
-      font-weight: 500;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      overflow-y: auto;
-    }
-
-    .modal.active {
-      display: flex;
-      align-items: flex-end;
-    }
-
-    .modal-content {
-      background: white;
-      width: 100%;
-      max-width: 600px;
-      border-radius: 12px 12px 0 0;
-      padding: 2rem 1.5rem;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-
-    .modal-image {
-      width: 100%;
-      max-height: 300px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-    }
-
-    .modal-header h2 {
-      font-size: 18px;
-      font-weight: 500;
-      color: #7A8E8A;
-      margin-bottom: 0.5rem;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: #7A8E8A;
-      cursor: pointer;
-    }
-
+    /* ====== UNLOCK SCREEN ====== */
     .unlock-section {
       background: rgba(232, 240, 237, 0.5);
-      border: 1px solid #C7A2A8;
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
       margin-top: 2rem;
       text-align: center;
     }
 
+    .unlock-section h3 {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+
     .unlock-input {
       width: 100%;
-      padding: 11px;
-      border: 1px solid #C7A2A8;
+      padding: 12px;
+      border: 1px solid var(--border);
       border-radius: 8px;
       font-size: 14px;
-      margin: 1rem 0;
+      margin: 1.5rem 0 1rem 0;
       font-family: monospace;
+      letter-spacing: 1px;
     }
 
     .unlock-button {
       width: 100%;
       padding: 12px;
-      background: #B8949E;
+      background: var(--mauve);
       color: white;
       border: none;
       border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease;
     }
 
     .unlock-button:hover {
@@ -222,160 +116,550 @@
       transform: scale(0.98);
     }
 
+    #codeError {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .unlock-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 1.5rem;
+    }
+
+    .unlock-hint a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* ====== APP SCREEN ====== */
+    #appScreen {
+      display: none;
+    }
+
+    .app-header-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .header-btn {
+      background: #E8F0ED;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--teal);
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+
+    .header-btn:hover {
+      background: #D8E0DD;
+    }
+
+    #installBtn {
+      background: var(--gold);
+      color: white;
+      padding: 10px 16px;
+    }
+
+    #installBtn:hover {
+      background: #B8943C;
+    }
+
+    /* ====== SYMPTOM FILTER ====== */
+    .symptom-section {
+      margin: 2rem 0;
+    }
+
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--teal);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .symptom-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .symptom-btn {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-weight: 400;
+    }
+
+    .symptom-btn:hover {
+      border-color: var(--mauve);
+      background: rgba(184, 148, 158, 0.05);
+    }
+
+    .symptom-btn.active {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+    }
+
+    .symptom-btn.all-clear {
+      background: #E8F0ED;
+      color: var(--teal);
+    }
+
+    /* ====== EXERCISES LIST ====== */
+    .exercises-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2rem 0 1rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .exercises-header h2 {
+      font-size: 18px;
+      color: var(--teal);
+      font-weight: 500;
+    }
+
+    .exercises-count {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .exercise-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .exercise-card:hover:not(.locked) {
+      background: rgba(232, 240, 237, 0.3);
+      border-color: var(--mauve);
+      transform: translateY(-2px);
+    }
+
+    .exercise-card.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .exercise-card h3 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--teal);
+      margin-bottom: 0.3rem;
+    }
+
+    .exercise-meta {
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .exercise-symptom {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+    }
+
+    .premium-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    /* ====== MODAL ====== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      overflow-y: auto;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--teal);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-close:hover {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 6px;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, rgba(122, 142, 138, 0.1), rgba(232, 240, 237, 0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-header p {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    .modal-details {
+      font-size: 13px;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    /* ====== UPGRADE BANNER ====== */
     .upgrade-banner {
       background: linear-gradient(135deg, rgba(184, 148, 158, 0.1), rgba(197, 165, 92, 0.1));
-      border: 1px solid #C7A2A8;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem;
-      margin-top: 1rem;
+      margin-top: 2rem;
       text-align: center;
     }
 
     .upgrade-banner h4 {
       font-size: 15px;
       font-weight: 500;
-      color: #7A8E8A;
+      color: var(--teal);
       margin-bottom: 0.5rem;
+    }
+
+    .upgrade-banner p {
+      font-size: 13px;
+      color: var(--text-light);
     }
 
     .upgrade-banner a {
       display: inline-block;
-      background: #C5A55C;
+      background: var(--gold);
       color: white;
       padding: 10px 20px;
       border-radius: 8px;
       text-decoration: none;
       margin-top: 1rem;
-      transition: all 0.2s ease;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.2s ease;
     }
 
     .upgrade-banner a:hover {
-      background: #B89D52;
-      transform: translateY(-2px);
+      background: #B8943C;
     }
 
-    .pricing-info {
-      font-size: 12px;
-      color: #B8949E;
-      margin-top: 0.5rem;
-      font-style: italic;
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 480px) {
+      .symptom-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .exercise-card {
+        padding: 1rem;
+      }
+
+      .app-header h1 {
+        font-size: 18px;
+      }
     }
 
-    .info-text {
-      font-size: 12px;
-      color: #B8949E;
-      margin-top: 1rem;
-      line-height: 1.5;
+    /* ====== ANIMATIONS ====== */
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
-    .info-text a {
-      color: #C5A55C;
-      text-decoration: none;
-      font-weight: 500;
+    .exercise-card {
+      animation: slideUp 0.3s ease;
     }
   </style>
 </head>
 <body>
   <div class="app-header">
-    <h1>Dein Nervensystem</h1>
+    <h1>🫁 ATEM-PAUSE</h1>
     <p>Somatische Übungen für Ruhe & Kraft</p>
-    <div class="install-button-container" id="installContainer" style="display: none;">
-      <button class="install-button" id="installButton" onclick="handleInstallClick()">
-        📱 App installieren
-      </button>
-      <p class="info-text">Nutze die App offline auf deinem Handy & PC</p>
+    <div class="app-header-buttons">
+      <button id="installBtn" class="header-btn" style="display: none;">📱 Zur App machen</button>
+      <button onclick="changeCode()" class="header-btn">Code ändern</button>
     </div>
   </div>
 
   <div class="container">
+    <!-- UNLOCK SCREEN -->
     <div id="welcomeScreen">
       <div class="unlock-section">
         <h3>Willkommen bei ATEM-PAUSE</h3>
-        <p style="margin: 1rem 0;">Gib deinen Code ein, um zu starten</p>
+        <p style="margin: 1rem 0; color: var(--text-light);">Gib deinen Code ein, um zu starten</p>
         <input type="text" id="codeInput" class="unlock-input" placeholder="Code eingeben" maxlength="20">
         <button class="unlock-button" onclick="unlockApp()">Freischalten</button>
-        <p id="codeError" style="color: #C85A30; font-size: 13px; margin-top: 0.5rem;"></p>
-        <p class="info-text">
-          <strong>Du hast noch keinen Code?</strong><br>
-          <a href="https://carolinsemmelroth.com/deine-atem-pause" target="_blank">Hier erhältst du deinen Zugang</a>
-        </p>
+        <div id="codeError"></div>
+        <div class="unlock-hint">
+          <strong>Kein Code?</strong><br>
+          <a href="https://carolinsemmelroth.com/deine-atem-pause" target="_blank">Hier gibt's deine App →</a>
+        </div>
       </div>
     </div>
 
-    <div id="appScreen" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin: 1rem 0;">
-        <h2 style="font-size: 18px; color: #7A8E8A;">Deine Übungen</h2>
-        <button onclick="changeCode()" style="background: #E8F0ED; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;">Code ändern</button>
+    <!-- APP SCREEN -->
+    <div id="appScreen">
+      <div class="symptom-section">
+        <h3 class="section-title">Was brauchst du gerade?</h3>
+        <div class="symptom-grid" id="symptomGrid"></div>
+        <button onclick="clearSymptomFilter()" class="symptom-btn all-clear" style="width: 100%; margin-top: 1rem;">Alle anzeigen</button>
       </div>
 
+      <div class="exercises-header">
+        <h2>Deine Übungen</h2>
+        <span class="exercises-count"><span id="exerciseCount">0</span> gefunden</span>
+      </div>
       <div id="exercisesContainer"></div>
 
       <div class="upgrade-banner" id="upgradeBanner" style="display: none;">
-        <h4>Du hast die INTRO-Version</h4>
-        <p>100+ weitere Übungen warten auf dich – für jeden Moment, den du brauchst.</p>
+        <h4>✨ Du hast die INTRO-Version</h4>
+        <p>100+ weitere Premium-Übungen warten auf dich – für jeden Moment, den du brauchst.</p>
         <a href="https://carolinsemmelroth.com/shop/atem-pause-upgrade-36" target="_blank">Zum Upgrade →</a>
       </div>
     </div>
   </div>
 
+  <!-- MODAL -->
   <div class="modal" id="modal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <img id="modalImage" class="modal-image" alt="Übungsanleitung">
+      <div id="modalImage" class="modal-image">🫁</div>
       <div class="modal-header">
         <h2 id="modalTitle"></h2>
-        <p id="modalDescription" style="color: #B8949E; font-size: 13px; margin-bottom: 1rem;"></p>
+        <p id="modalDescription"></p>
       </div>
-      <div id="modalDetails" style="font-size: 13px; color: #5A6B68; line-height: 1.6;"></div>
+      <div class="modal-details" id="modalDetails"></div>
     </div>
   </div>
 
   <script>
-    // INTRO ÜBUNGEN (12)
-    const introExercises = [
-      { id: 1, title: '01 Erdung – mit beiden Füßen ankommen', file: '01-erdung.png', duration: 3, category: 'Basis' },
-      { id: 2, title: '02 Box Breathing – der 4-4-4-4 Rhythmus', file: '02-box-breathing.png', duration: 3, category: 'Atem' },
-      { id: 3, title: '03 Die 5 Sinne – Jetzt-Verankerung', file: '03-5-sinne.png', duration: 5, category: 'Erdung' },
-      { id: 4, title: '04 Erdungs-Atemzug – die Universal-Übung', file: '04-erdungs-atemzug.png', duration: 2, category: 'Basis' },
-      { id: 5, title: '05 Schulter-Puls – Spannung lösen', file: '05-schulter-puls.png', duration: 4, category: 'Körper' },
-      { id: 6, title: '06 Gegenpol-Berührung – Erwachen', file: '06-gegenpol-beruehrung.png', duration: 3, category: 'Körper' },
-      { id: 7, title: '07 Anspannen & Loslassen', file: '07-anspannen-loslassen.png', duration: 5, category: 'Körper' },
-      { id: 8, title: '08 4-7-8 Atem – der Einschlaf-Trick', file: '08-4-7-8-atem.png', duration: 3, category: 'Schlaf' },
-      { id: 9, title: '09 Sanfte Bewegung – wieder lebendig', file: '09-sanfte-bewegung.png', duration: 4, category: 'Körper' },
-      { id: 10, title: '10 Vagal Summen – Ruhe-Signal', file: '10-vagal-summen.png', duration: 3, category: 'Atem' },
-      { id: 11, title: '11 Mama-Moment – Geduld zurückgewinnen', file: '11-mama-moment.png', duration: 2, category: 'Alltag' },
-      { id: 12, title: '12 Fotografin-Mut – Kamera-Selbstbewusstsein', file: '12-fotografin-mut.png', duration: 3, category: 'Kraft' }
+    // ====== ALLE 112 ÜBUNGEN ======
+    const allExercisesData = [
+      { id: 1, title: '01 Erdung – mit beiden Füßen ankommen', file: '01-erdung.png', duration: 3, symptom: 'Innere Unruhe', type: 'INTRO', symbol: '🌿' },
+      { id: 2, title: '02 Box Breathing – der 4-4-4-4 Rhythmus', file: '02-box-breathing.png', duration: 3, symptom: 'Schneller Herzschlag', type: 'INTRO', symbol: '🫀' },
+      { id: 3, title: '03 Die 5 Sinne – Jetzt-Verankerung', file: '03-5-sinne.png', duration: 5, symptom: 'Wirbeliger Kopf', type: 'INTRO', symbol: '🧠' },
+      { id: 4, title: '04 Erdungs-Atemzug – die Universal-Übung', file: '04-erdungs-atemzug.png', duration: 2, symptom: 'Schnellstart', type: 'INTRO', symbol: '⚡' },
+      { id: 5, title: '05 Schulter-Puls – Spannung lösen', file: '05-schulter-puls.png', duration: 4, symptom: 'Nackenverspannung', type: 'INTRO', symbol: '🌿' },
+      { id: 6, title: '06 Gegenpol-Berührung – Erwachen', file: '06-gegenpol-beruehrung.png', duration: 3, symptom: 'Taubheit', type: 'INTRO', symbol: '🌿' },
+      { id: 7, title: '07 Anspannen & Loslassen', file: '07-anspannen-loslassen.png', duration: 5, symptom: 'Spannung lösen', type: 'INTRO', symbol: '🌿' },
+      { id: 8, title: '08 4-7-8 Atem – der Einschlaf-Trick', file: '08-4-7-8-atem.png', duration: 3, symptom: 'Schlafprobleme', type: 'INTRO', symbol: '🌙' },
+      { id: 9, title: '09 Sanfte Bewegung – wieder lebendig', file: '09-sanfte-bewegung.png', duration: 4, symptom: 'Erstarrung', type: 'INTRO', symbol: '⚡' },
+      { id: 10, title: '10 Vagal Summen – Ruhe-Signal', file: '10-vagal-summen.png', duration: 3, symptom: 'Vagusnerv', type: 'INTRO', symbol: '🫀' },
+      { id: 11, title: '11 Mama-Moment – Geduld zurückgewinnen', file: '11-mama-moment.png', duration: 2, symptom: 'Reizbarkeit', type: 'INTRO', symbol: '⚡' },
+      { id: 12, title: '12 Fotografin-Mut – Kamera-Selbstbewusstsein', file: '12-fotografin-mut.png', duration: 3, symptom: 'Selbstwert', type: 'INTRO', symbol: '💪' },
+      { id: 13, title: '13 Mein Kopf dreht sich – Fokus-Ankern', file: '13-fokus-ankern.png', duration: 4, symptom: 'Gedankenwirbel', type: 'PREMIUM', symbol: '🧠' },
+      { id: 14, title: '14 Gedanken-Stopp – das Reset-Signal', file: '14-gedanken-stopp.png', duration: 2, symptom: 'Gedankenschleife', type: 'PREMIUM', symbol: '⚡' },
+      { id: 15, title: '15 Konzentrations-Atem', file: '15-konzentrations-atem.png', duration: 3, symptom: 'Ablenkung', type: 'PREMIUM', symbol: '🫀' },
+      { id: 16, title: '16 Visualisierung – zur Ruhe kommen', file: '16-visualisierung.png', duration: 6, symptom: 'Mentale Unruhe', type: 'PREMIUM', symbol: '🧘‍♀️' },
+      { id: 17, title: '17 Körper-Scan für Unruhige', file: '17-koerper-scan.png', duration: 5, symptom: 'Angespanntsein', type: 'PREMIUM', symbol: '🌿' },
+      { id: 18, title: '18 Nacken-Dehnung – leicht gemacht', file: '18-nacken-dehnung.png', duration: 4, symptom: 'Kopfschmerzen', type: 'PREMIUM', symbol: '🌿' },
+      { id: 19, title: '19 Seitenwechsel – Balance finden', file: '19-seitenwechsel.png', duration: 3, symptom: 'Asymmetrie', type: 'PREMIUM', symbol: '🌿' },
+      { id: 20, title: '20 Pendel-Atem – rhythmische Ruhe', file: '20-pendel-atem.png', duration: 3, symptom: 'Herzrasen', type: 'PREMIUM', symbol: '🫀' },
+      { id: 21, title: '21 Alles ist zu laut – Überreizung lindern', file: '21-ueberreizung.png', duration: 5, symptom: 'Reizüberflutung', type: 'PREMIUM', symbol: '🌙' },
+      { id: 22, title: '22 Schulter-Entspannung – tiefe Version', file: '22-schulter-entspannung.png', duration: 5, symptom: 'Nackenstarre', type: 'PREMIUM', symbol: '🌿' },
+      { id: 23, title: '23 Kinn-Entspannung – Kiefer-Release', file: '23-kinn-entspannung.png', duration: 4, symptom: 'Zahnknirschen', type: 'PREMIUM', symbol: '🌿' },
+      { id: 24, title: '24 Atemraum – vergrößern', file: '24-atemraum.png', duration: 4, symptom: 'Beklemmung', type: 'PREMIUM', symbol: '🫀' },
+      { id: 25, title: '25 Selbst-Massage – Gesicht', file: '25-selbst-massage.png', duration: 5, symptom: 'Anspannung im Gesicht', type: 'PREMIUM', symbol: '🌿' },
+      { id: 26, title: '26 Summen-Meditation', file: '26-summen-meditation.png', duration: 5, symptom: 'Reizmittel', type: 'PREMIUM', symbol: '🫀' },
+      { id: 27, title: '27 Das Licht-Fenster', file: '27-licht-fenster.png', duration: 6, symptom: 'Visuelle Reize', type: 'PREMIUM', symbol: '✨' },
+      { id: 28, title: '28 Hand-Erdung', file: '28-hand-erdung.png', duration: 3, symptom: 'Luftigkeit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 29, title: '29 Ich fühle mich verloren – Orientierung', file: '29-orientierung.png', duration: 5, symptom: 'Verloren-Gefühl', type: 'PREMIUM', symbol: '🧭' },
+      { id: 30, title: '30 Fuß-Erdung – intensive Version', file: '30-fuss-erdung.png', duration: 4, symptom: 'Bodenlosigkeit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 31, title: '31 Wandkontakt – volle Länge', file: '31-wandkontakt.png', duration: 5, symptom: 'Instabilität', type: 'PREMIUM', symbol: '🌿' },
+      { id: 32, title: '32 Langsames Gehen – achtsam', file: '32-langsames-gehen.png', duration: 8, symptom: 'Hastigkeit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 33, title: '33 Körper-Positionen – Halt finden', file: '33-koerper-positionen.png', duration: 4, symptom: 'Halt-Suche', type: 'PREMIUM', symbol: '💪' },
+      { id: 34, title: '34 Raum-Wahrnehmung', file: '34-raum-wahrnehmung.png', duration: 5, symptom: 'Desorientierung', type: 'PREMIUM', symbol: '🧠' },
+      { id: 35, title: '35 Schwerkraft-Atem', file: '35-schwerkraft-atem.png', duration: 3, symptom: 'Leichtigkeit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 36, title: '36 Objekt-Fokus – visuelle Erdung', file: '36-objekt-fokus.png', duration: 5, symptom: 'Wirbelei', type: 'PREMIUM', symbol: '🧠' },
+      { id: 37, title: '37 Sicherheits-Raum visualisieren', file: '37-sicherheits-raum.png', duration: 7, symptom: 'Angst-Ort', type: 'PREMIUM', symbol: '🧘‍♀️' },
+      { id: 38, title: '38 Ich spüre nichts – Körper-Weckruf', file: '38-koerper-weckruf.png', duration: 6, symptom: 'Taubheit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 39, title: '39 Gegenpol-Berührung – intensiv', file: '39-gegenpol-intensiv.png', duration: 4, symptom: 'Dissoziation', type: 'PREMIUM', symbol: '⚡' },
+      { id: 40, title: '40 Temperatur-Kontrast', file: '40-temperatur-kontrast.png', duration: 3, symptom: 'Gefühllosigkeit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 41, title: '41 Bewegungs-Spirale', file: '41-bewegungs-spirale.png', duration: 5, symptom: 'Starre', type: 'PREMIUM', symbol: '⚡' },
+      { id: 42, title: '42 Kraftvolle Pose – Empowerment', file: '42-kraftvolle-pose.png', duration: 4, symptom: 'Schwäche', type: 'PREMIUM', symbol: '💪' },
+      { id: 43, title: '43 Spannung-Welle', file: '43-spannung-welle.png', duration: 5, symptom: 'Erstarrung', type: 'PREMIUM', symbol: '💪' },
+      { id: 44, title: '44 Atmen wie eine Löwin', file: '44-atmen-loewin.png', duration: 4, symptom: 'Passive', type: 'PREMIUM', symbol: '💪' },
+      { id: 45, title: '45 Hand-Druck – gegenseitig', file: '45-hand-druck.png', duration: 3, symptom: 'Energielosigkeit', type: 'PREMIUM', symbol: '💪' },
+      { id: 46, title: '46 Tanz-Bewegung – freie', file: '46-tanz-bewegung.png', duration: 6, symptom: 'Unbeweglichkeit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 47, title: '47 Ich bin wütend/traurig – Platz geben', file: '47-gefuehlsraum.png', duration: 7, symptom: 'Gefühlsstau', type: 'PREMIUM', symbol: '💪' },
+      { id: 48, title: '48 Kraft-Übung – Faust', file: '48-kraft-faust.png', duration: 4, symptom: 'Wut', type: 'PREMIUM', symbol: '💪' },
+      { id: 49, title: '49 Stamping – Boden-Behauptung', file: '49-stamping.png', duration: 5, symptom: 'Wut-Stau', type: 'PREMIUM', symbol: '💪' },
+      { id: 50, title: '50 Lautstärke – sicher geben', file: '50-lautsstaerke.png', duration: 6, symptom: 'Stille-Druck', type: 'PREMIUM', symbol: '💪' },
+      { id: 51, title: '51 Kissen schlagen – kontrolliert', file: '51-kissen-schlagen.png', duration: 5, symptom: 'Zorn', type: 'PREMIUM', symbol: '💪' },
+      { id: 52, title: '52 Trauer-Atemraum', file: '52-trauer-atem.png', duration: 8, symptom: 'Traurigkeit', type: 'PREMIUM', symbol: '🤍' },
+      { id: 53, title: '53 Weinen-Erlaubnis', file: '53-weinen.png', duration: 10, symptom: 'Gefühls-Blockade', type: 'PREMIUM', symbol: '🤍' },
+      { id: 54, title: '54 Augenverschluss – Sicherheit', file: '54-augenverschluss.png', duration: 5, symptom: 'Überflutung', type: 'PREMIUM', symbol: '🧘‍♀️' },
+      { id: 55, title: '55 Wut-Tanz', file: '55-wut-tanz.png', duration: 7, symptom: 'Frustration', type: 'PREMIUM', symbol: '⚡' },
+      { id: 56, title: '56 Schmerz-Atem', file: '56-schmerz-atem.png', duration: 6, symptom: 'Verlust', type: 'PREMIUM', symbol: '🤍' },
+      { id: 57, title: '57 Ich trau mir nicht mehr – Grenzen spüren', file: '57-grenzen-spueren.png', duration: 6, symptom: 'Machtlosigkeit', type: 'PREMIUM', symbol: '💪' },
+      { id: 58, title: '58 Körperliches Nein', file: '58-koerperliches-nein.png', duration: 4, symptom: 'Überschreitung', type: 'PREMIUM', symbol: '💪' },
+      { id: 59, title: '59 Wegdrücken – kraftvoll', file: '59-wegdruecken.png', duration: 5, symptom: 'Eindringen', type: 'PREMIUM', symbol: '💪' },
+      { id: 60, title: '60 Hals-Schutz', file: '60-hals-schutz.png', duration: 4, symptom: 'Hals-Enge', type: 'PREMIUM', symbol: '🌿' },
+      { id: 61, title: '61 Raum-Halten', file: '61-raum-halten.png', duration: 6, symptom: 'Grenzen-Verlust', type: 'PREMIUM', symbol: '💪' },
+      { id: 62, title: '62 Arm-Barriere', file: '62-arm-barriere.png', duration: 4, symptom: 'Zugangs-Gefühl', type: 'PREMIUM', symbol: '💪' },
+      { id: 63, title: '63 Stimme heben', file: '63-stimme-heben.png', duration: 5, symptom: 'Stille', type: 'PREMIUM', symbol: '💪' },
+      { id: 64, title: '64 Nein-Mantra', file: '64-nein-mantra.png', duration: 3, symptom: 'Ja-Zwang', type: 'PREMIUM', symbol: '⚡' },
+      { id: 65, title: '65 Selbst-Schutz-Pose', file: '65-selbst-schutz.png', duration: 5, symptom: 'Unschutz', type: 'PREMIUM', symbol: '💪' },
+      { id: 66, title: '66 Grenz-Atemzug', file: '66-grenz-atem.png', duration: 3, symptom: 'Grenz-Unklarheit', type: 'PREMIUM', symbol: '🫀' },
+      { id: 67, title: '67 Ich bin gemein zu mir selbst – Mitgefühl', file: '67-mitgefuehl.png', duration: 7, symptom: 'Selbst-Kritik', type: 'PREMIUM', symbol: '🤍' },
+      { id: 68, title: '68 Hand aufs Herz', file: '68-hand-herz.png', duration: 5, symptom: 'Hartherzigkeit', type: 'PREMIUM', symbol: '🤍' },
+      { id: 69, title: '69 Selbst-Umarmer', file: '69-selbst-umarmer.png', duration: 6, symptom: 'Einsamkeit', type: 'PREMIUM', symbol: '🤍' },
+      { id: 70, title: '70 Spiegelblick', file: '70-spiegelblick.png', duration: 8, symptom: 'Selbst-Hass', type: 'PREMIUM', symbol: '🤍' },
+      { id: 71, title: '71 Dankbarkeits-Moment', file: '71-dankbarkeit.png', duration: 4, symptom: 'Negativität', type: 'PREMIUM', symbol: '✨' },
+      { id: 72, title: '72 Innere Kind-Stimme', file: '72-inneres-kind.png', duration: 6, symptom: 'Selbst-Kritik', type: 'PREMIUM', symbol: '🤍' },
+      { id: 73, title: '73 Satz-Anker – persönlich', file: '73-satz-anker.png', duration: 3, symptom: 'Selbst-Zweifel', type: 'PREMIUM', symbol: '🤍' },
+      { id: 74, title: '74 Vergebungs-Atem', file: '74-vergebung.png', duration: 7, symptom: 'Schuld', type: 'PREMIUM', symbol: '🤍' },
+      { id: 75, title: '75 Liebevolle-Stimme', file: '75-liebevolle-stimme.png', duration: 5, symptom: 'Kritischer innerer Stimme', type: 'PREMIUM', symbol: '🤍' },
+      { id: 76, title: '76 Dank an Körper', file: '76-dank-koerper.png', duration: 4, symptom: 'Körper-Feindlichkeit', type: 'PREMIUM', symbol: '🤍' },
+      { id: 77, title: '77 Ich kann nicht schlafen – Tiefschlaf', file: '77-tiefschlaf.png', duration: 8, symptom: 'Insomnie', type: 'PREMIUM', symbol: '🌙' },
+      { id: 78, title: '78 Body Scan – Einschlaf-Version', file: '78-body-scan.png', duration: 10, symptom: 'Gedanken-Karussell', type: 'PREMIUM', symbol: '🌙' },
+      { id: 79, title: '79 Füße verwurzeln', file: '79-fuesse-verwurzeln.png', duration: 5, symptom: 'Unruhe', type: 'PREMIUM', symbol: '🌙' },
+      { id: 80, title: '80 Gedanken ziehen vorbei', file: '80-gedanken-vorbei.png', duration: 6, symptom: 'Gedanken-Fixation', type: 'PREMIUM', symbol: '🧠' },
+      { id: 81, title: '81 Stille-Atem', file: '81-stille-atem.png', duration: 4, symptom: 'Lautstärke', type: 'PREMIUM', symbol: '🌙' },
+      { id: 82, title: '82 Progressive Entspannung', file: '82-progressive-entspannung.png', duration: 8, symptom: 'Muskel-Anspannung', type: 'PREMIUM', symbol: '🌿' },
+      { id: 83, title: '83 Schlaf-Mantra', file: '83-schlaf-mantra.png', duration: 3, symptom: 'Angst-Gedanken', type: 'PREMIUM', symbol: '🌙' },
+      { id: 84, title: '84 Dunkelheits-Visualisierung', file: '84-dunkelheit.png', duration: 7, symptom: 'Licht-Reizung', type: 'PREMIUM', symbol: '🌙' },
+      { id: 85, title: '85 Herz-Frequenz senken', file: '85-herz-frequenz.png', duration: 6, symptom: 'Herzrasen', type: 'PREMIUM', symbol: '🫀' },
+      { id: 86, title: '86 Schlaf-Position optimieren', file: '86-schlaf-position.png', duration: 2, symptom: 'Unbequemheit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 87, title: '87 Schnellstart – 60 Sekunden', file: '87-schnellstart-60.png', duration: 1, symptom: 'Keine Zeit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 88, title: '88 Ultra-Kurz – 90 Sekunden', file: '88-schnellstart-90.png', duration: 1.5, symptom: 'Sehr kurz', type: 'PREMIUM', symbol: '⚡' },
+      { id: 89, title: '89 Mittags-Pause – 5 Min', file: '89-mittags-pause.png', duration: 5, symptom: 'Energie-Tief', type: 'PREMIUM', symbol: '🌿' },
+      { id: 90, title: '90 Arbeits-Pause – sitzen', file: '90-arbeits-pause.png', duration: 3, symptom: 'Büro-Stress', type: 'PREMIUM', symbol: '🌿' },
+      { id: 91, title: '91 Spaziergang – aktiv', file: '91-spaziergang.png', duration: 10, symptom: 'Bewegungs-Drang', type: 'PREMIUM', symbol: '⚡' },
+      { id: 92, title: '92 Pause-Ritual', file: '92-pause-ritual.png', duration: 4, symptom: 'Übergang', type: 'PREMIUM', symbol: '🧘‍♀️' },
+      { id: 93, title: '93 Atemzug für Mut', file: '93-mut-atem.png', duration: 2, symptom: 'Angst', type: 'PREMIUM', symbol: '💪' },
+      { id: 94, title: '94 Fokus-Atemzug', file: '94-fokus-atem.png', duration: 3, symptom: 'Zerstreutheit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 95, title: '95 Wirbel-Stopp', file: '95-wirbel-stopp.png', duration: 4, symptom: 'Gedanken-Loop', type: 'PREMIUM', symbol: '🧠' },
+      { id: 96, title: '96 Beruhigungs-Mantra', file: '96-beruhigung.png', duration: 3, symptom: 'Panik', type: 'PREMIUM', symbol: '🤍' },
+      { id: 97, title: '97 Angst-Auflösung', file: '97-angst-auflosung.png', duration: 5, symptom: 'Angespanntheit', type: 'PREMIUM', symbol: '⚡' },
+      { id: 98, title: '98 Druckabbau', file: '98-druckabbau.png', duration: 4, symptom: 'Beklemmung', type: 'PREMIUM', symbol: '🌿' },
+      { id: 99, title: '99 Stabilisierungs-Atem', file: '99-stabilisierung.png', duration: 4, symptom: 'Unsicherheit', type: 'PREMIUM', symbol: '🌿' },
+      { id: 100, title: '100 Zentrier-Übung', file: '100-zentrier.png', duration: 3, symptom: 'Verlorenheit', type: 'PREMIUM', symbol: '🧠' },
+      { id: 101, title: '101 Achtsame Gänge', file: '101-achtsame-gaenge.png', duration: 6, symptom: 'Dissoziierung', type: 'PREMIUM', symbol: '🌿' },
+      { id: 102, title: '102 Körper-Anker', file: '102-koerper-anker.png', duration: 5, symptom: 'Entfernung', type: 'PREMIUM', symbol: '💪' },
+      { id: 103, title: '103 Bewusstseins-Übung', file: '103-bewusstsein.png', duration: 4, symptom: 'Abwesenheit', type: 'PREMIUM', symbol: '🧠' },
+      { id: 104, title: '104 Energie-Welle', file: '104-energie-welle.png', duration: 5, symptom: 'Lähmung', type: 'PREMIUM', symbol: '⚡' },
+      { id: 105, title: '105 Kraft-Atemzug', file: '105-kraft-atem.png', duration: 3, symptom: 'Ohnmacht', type: 'PREMIUM', symbol: '💪' },
+      { id: 106, title: '106 Lautstärke-Übung', file: '106-lautsstaerke-uebung.png', duration: 4, symptom: 'Stille', type: 'PREMIUM', symbol: '💪' },
+      { id: 107, title: '107 Emotionale Entlastung', file: '107-emotionale-entlastung.png', duration: 6, symptom: 'Aufstau', type: 'PREMIUM', symbol: '🤍' },
+      { id: 108, title: '108 Grenzen-Kraft', file: '108-grenzen-kraft.png', duration: 4, symptom: 'Schwachheit', type: 'PREMIUM', symbol: '💪' },
+      { id: 109, title: '109 Selbst-Bestätigung', file: '109-selbst-bestaetigung.png', duration: 3, symptom: 'Zweifel', type: 'PREMIUM', symbol: '🤍' },
+      { id: 110, title: '110 Liebevolle Umarmung', file: '110-liebevolle-umarmung.png', duration: 5, symptom: 'Isolation', type: 'PREMIUM', symbol: '🤍' },
+      { id: 111, title: '111 Mitgefühl-Atemzug', file: '111-mitgefuehl-atem.png', duration: 4, symptom: 'Harte innere Stimme', type: 'PREMIUM', symbol: '🤍' },
+      { id: 112, title: '112 Nacht-Ruhe', file: '112-nacht-ruhe.png', duration: 8, symptom: 'Schlaflosigkeit', type: 'PREMIUM', symbol: '🌙' }
     ];
 
-    // PREMIUM ÜBUNGEN (100) - SCAFFOLD
-    const premiumExercises = [
-      { id: 13, title: '13 Mein Kopf dreht sich – Fokus-Ankern', file: '13-fokus-ankern.png', duration: 4, category: 'Welt 1' },
-      { id: 14, title: '14 Gedanken-Stopp – das Reset-Signal', file: '14-gedanken-stopp.png', duration: 2, category: 'Welt 1' },
-      { id: 112, title: '112 Nacht-Ruhe', file: '112-nacht-ruhe.png', duration: 8, category: 'Welt 8' }
-    ];
+    // ====== STATE ======
+    let unlockedLevel = 'NONE';
+    let selectedSymptom = null;
+    let deferredInstallPrompt = null;
 
-    // LAZY LOAD: Premium-Übungen generieren aus Dateinamen
-    function generatePremiumScaffold() {
-      const premiumData = [
-        { id: 13, file: '13-fokus-ankern.png' },
-        { id: 14, file: '14-gedanken-stopp.png' },
-        { id: 15, file: '15-konzentrations-atem.png' },
-        { id: 112, file: '112-nacht-ruhe.png' }
-      ];
+    // ====== INIT ======
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('atem_unlock_code');
+      if (saved === 'INTRO2024') {
+        unlockedLevel = 'INTRO';
+        showApp();
+      } else if (saved === 'PRO2026') {
+        unlockedLevel = 'PREMIUM';
+        showApp();
+      }
 
-      return premiumData.map((ex, idx) => ({
-        id: ex.id,
-        title: `Übung ${ex.id}`,
-        file: ex.file,
-        duration: 3,
-        category: 'Premium'
-      }));
-    }
+      // Service Worker
+      if ('serviceWorker' in navigator && location.protocol === 'https:') {
+        navigator.serviceWorker.register('/service-worker.js').catch(e => console.log('SW:', e.message));
+      }
 
-    let allExercises = introExercises;
-    let unlockedLevel = 'INTRO';
-    let deferredPrompt = null;
+      // PWA Install Prompt
+      window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        const btn = document.getElementById('installBtn');
+        btn.style.display = 'inline-block';
+      });
 
+      window.addEventListener('appinstalled', () => {
+        document.getElementById('installBtn').style.display = 'none';
+      });
+    });
+
+    // ====== UNLOCK ======
     function unlockApp() {
       const code = document.getElementById('codeInput').value.toUpperCase().trim();
       const errorEl = document.getElementById('codeError');
@@ -386,38 +670,82 @@
         showApp();
       } else if (code === 'PRO2026') {
         unlockedLevel = 'PREMIUM';
-        allExercises = [...introExercises, ...generatePremiumScaffold()];
         localStorage.setItem('atem_unlock_code', code);
         showApp();
       } else {
-        errorEl.textContent = 'Code nicht erkannt. Überprüfe die Schreibweise und versuche es nochmal.';
+        errorEl.textContent = '❌ Code nicht erkannt. Versuche es nochmal.';
+        errorEl.style.display = 'block';
       }
     }
 
+    // ====== SHOW APP ======
     function showApp() {
       document.getElementById('welcomeScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       document.getElementById('upgradeBanner').style.display = unlockedLevel === 'INTRO' ? 'block' : 'none';
 
-      // Install-Button anzeigen
-      if (deferredPrompt) {
-        document.getElementById('installContainer').style.display = 'block';
-      }
-
+      renderSymptomButtons();
       renderExercises();
     }
 
+    // ====== SYMPTOM BUTTONS ======
+    function renderSymptomButtons() {
+      const symptoms = [...new Set(allExercisesData.map(e => e.symptom))].sort();
+      const grid = document.getElementById('symptomGrid');
+
+      grid.innerHTML = symptoms.map(symptom => `
+        <button class="symptom-btn" onclick="filterBySymptom('${symptom}')">${symptom}</button>
+      `).join('');
+    }
+
+    function filterBySymptom(symptom) {
+      selectedSymptom = selectedSymptom === symptom ? null : symptom;
+      renderExercises();
+
+      // Visual feedback
+      document.querySelectorAll('.symptom-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === symptom && selectedSymptom === symptom) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    function clearSymptomFilter() {
+      selectedSymptom = null;
+      renderExercises();
+      document.querySelectorAll('.symptom-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    // ====== RENDER EXERCISES ======
     function renderExercises() {
       const container = document.getElementById('exercisesContainer');
-      let html = '';
+      let exercises = allExercisesData;
 
-      allExercises.forEach(ex => {
-        const isLocked = unlockedLevel === 'INTRO' && ex.id > 12;
+      // Filter by level
+      if (unlockedLevel === 'INTRO') {
+        exercises = exercises.filter(e => e.type === 'INTRO');
+      }
+
+      // Filter by symptom
+      if (selectedSymptom) {
+        exercises = exercises.filter(e => e.symptom === selectedSymptom);
+      }
+
+      // Update count
+      document.getElementById('exerciseCount').textContent = exercises.length;
+
+      // Render
+      let html = '';
+      exercises.forEach(ex => {
+        const isLocked = unlockedLevel === 'INTRO' && ex.type === 'PREMIUM';
+        const premiumBadge = ex.type === 'PREMIUM' ? ' <span class="premium-badge">PREMIUM</span>' : '';
+
         html += `
-          <div class="exercise-card ${isLocked ? 'locked' : ''}" onclick="${isLocked ? '' : `openExercise(${ex.id})`}">
-            <h3>${ex.title}</h3>
-            <p>${ex.category} • ${ex.duration} Min</p>
-            ${isLocked ? '<p style="color: #C85A30; font-weight: 500;">🔒 Premium-Übung</p>' : ''}
+          <div class="exercise-card ${isLocked ? 'locked' : ''}" ${!isLocked ? `onclick="openExercise(${ex.id})"` : ''}>
+            <h3>${ex.title}${premiumBadge}</h3>
+            <div class="exercise-meta">${ex.symbol} ${ex.duration} min</div>
+            <div class="exercise-symptom">${ex.symptom}</div>
           </div>
         `;
       });
@@ -425,14 +753,19 @@
       container.innerHTML = html;
     }
 
+    // ====== MODAL ======
     function openExercise(id) {
-      const ex = allExercises.find(e => e.id === id);
+      const ex = allExercisesData.find(e => e.id === id);
       if (!ex) return;
 
       document.getElementById('modalTitle').textContent = ex.title;
-      document.getElementById('modalDescription').textContent = `${ex.category} • ${ex.duration} Minuten`;
-      document.getElementById('modalImage').src = `/public/images/exercises/${ex.file}`;
-      document.getElementById('modalDetails').innerHTML = `<p>Folge den Anweisungen auf dem Bild. ${ex.duration} Minuten für dich selbst.</p>`;
+      document.getElementById('modalDescription').textContent = `${ex.symptom} • ${ex.duration} Minuten`;
+      document.getElementById('modalImage').textContent = ex.symbol;
+      document.getElementById('modalDetails').innerHTML = `
+        <p><strong>Symptom:</strong> ${ex.symptom}</p>
+        <p style="margin-top: 1rem;"><strong>Dauer:</strong> ${ex.duration} Minuten</p>
+        <p style="margin-top: 1rem;">Folge den Anweisungen in der Übung. Nimm dir die Zeit, die du brauchst.</p>
+      `;
       document.getElementById('modal').classList.add('active');
     }
 
@@ -440,72 +773,30 @@
       document.getElementById('modal').classList.remove('active');
     }
 
+    // ====== CHANGE CODE ======
     function changeCode() {
       localStorage.removeItem('atem_unlock_code');
+      unlockedLevel = 'NONE';
       document.getElementById('welcomeScreen').style.display = 'block';
       document.getElementById('appScreen').style.display = 'none';
       document.getElementById('codeInput').value = '';
-      document.getElementById('codeError').textContent = '';
+      document.getElementById('codeError').style.display = 'none';
     }
 
-    function handleInstallClick() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('App installiert!');
-          }
-          deferredPrompt = null;
-          document.getElementById('installContainer').style.display = 'none';
-        });
-      }
-    }
+    // ====== INSTALL PWA ======
+    document.getElementById('installBtn')?.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) return;
 
-    // INIT
-    window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('atem_unlock_code');
-      if (saved) {
-        if (saved === 'INTRO2024') {
-          unlockedLevel = 'INTRO';
-          showApp();
-        } else if (saved === 'PRO2026') {
-          unlockedLevel = 'PREMIUM';
-          allExercises = [...introExercises, ...generatePremiumScaffold()];
-          showApp();
-        }
-      }
-
-      // PWA: beforeinstallprompt Event
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        // Zeige Install-Button, wenn App-Screen aktiv ist
-        if (document.getElementById('appScreen').style.display !== 'none') {
-          document.getElementById('installContainer').style.display = 'block';
-        }
-      });
-
-      // PWA: appinstalled Event
-      window.addEventListener('appinstalled', () => {
-        console.log('ATEM-PAUSE app wurde installiert!');
-        deferredPrompt = null;
-        document.getElementById('installContainer').style.display = 'none';
-      });
-
-      // PWA: Service Worker
-      if ('serviceWorker' in navigator && location.protocol === 'https:') {
-        navigator.serviceWorker.register('/service-worker.js').catch(e => console.log('Service Worker:', e.message));
-      }
+      deferredInstallPrompt.prompt();
+      const { outcome } = await deferredInstallPrompt.userChoice;
+      console.log(`User response: ${outcome}`);
+      deferredInstallPrompt = null;
     });
 
-    // Fallback: Install-Button anzeigen, auch wenn beforeinstallprompt nicht funktioniert
-    window.addEventListener('load', () => {
-      // Zeige Button auf Mobil-Geräten auch ohne beforeinstallprompt
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        if (document.getElementById('appScreen').style.display !== 'none' && !deferredPrompt) {
-          document.getElementById('installButton').textContent = '📱 Zum Homescreen hinzufügen';
-          document.getElementById('installContainer').style.display = 'block';
-        }
+    // Close modal on click outside
+    document.getElementById('modal')?.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) {
+        closeModal();
       }
     });
   </script>
