@@ -334,6 +334,55 @@
     .reset-filter.show {
       display: block;
     }
+
+    .quick-btn-main {
+      background: #E8F0ED;
+      border: 1px solid #C7A2A8;
+      color: #7A8E8A;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .quick-btn-main:hover {
+      background: #D4E5E0;
+      border-color: #B8949E;
+    }
+
+    .quick-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .quick-menu-item {
+      background: #F5F9F8;
+      border: 1px solid #C7A2A8;
+      color: #7A8E8A;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .quick-menu-item:hover {
+      background: #E8F0ED;
+      border-color: #B8949E;
+    }
+
+    .quick-menu-item.active {
+      background: #B8949E;
+      color: white;
+      border-color: #B8949E;
+    }
   </style>
 </head>
 <body>
@@ -364,16 +413,19 @@
       </div>
 
       <div class="quick-selector" id="quickSelector">
-        <h3>Schnellauswahl – Was brauchst du gerade?</h3>
-        <div class="quick-selector-buttons">
-          <button class="quick-btn" onclick="filterByProblem('reizbarkeit', this)">😤 Reizbarkeit</button>
-          <button class="quick-btn" onclick="filterByProblem('angst', this)">😨 Angst</button>
-          <button class="quick-btn" onclick="filterByProblem('kopfschmerz', this)">🤕 Kopfschmerz</button>
-          <button class="quick-btn" onclick="filterByProblem('ueberreizung', this)">🔊 Überreizung</button>
-          <button class="quick-btn" onclick="filterByProblem('taubheit', this)">🪡 Taubheit</button>
-          <button class="quick-btn" onclick="filterByProblem('konzentration', this)">🧠 Fokus</button>
-          <button class="quick-btn" onclick="filterByProblem('trauer', this)">💔 Trauer</button>
-          <button class="quick-btn" onclick="filterByProblem('schlaf', this)">😴 Schlaf</button>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button class="quick-btn-main" onclick="toggleQuickMenu()" style="flex: 1;">📍 Schnellauswahl</button>
+          <button class="quick-btn-main" onclick="filterByProblem('60sekunden', this)" style="flex: 1;">⚡ 60 Sekunden</button>
+        </div>
+        <div class="quick-menu" id="quickMenu" style="display: none; margin-top: 1rem;">
+          <button class="quick-menu-item" onclick="filterByProblem('reizbarkeit', this)">😤 Reizbarkeit</button>
+          <button class="quick-menu-item" onclick="filterByProblem('angst', this)">😨 Angst</button>
+          <button class="quick-menu-item" onclick="filterByProblem('kopfschmerz', this)">🤕 Kopfschmerz</button>
+          <button class="quick-menu-item" onclick="filterByProblem('ueberreizung', this)">🔊 Überreizung</button>
+          <button class="quick-menu-item" onclick="filterByProblem('taubheit', this)">🪡 Taubheit</button>
+          <button class="quick-menu-item" onclick="filterByProblem('konzentration', this)">🧠 Fokus</button>
+          <button class="quick-menu-item" onclick="filterByProblem('trauer', this)">💔 Trauer</button>
+          <button class="quick-menu-item" onclick="filterByProblem('schlaf', this)">😴 Schlaf</button>
         </div>
         <button class="reset-filter" id="resetFilter" onclick="resetFilter()">Alle Übungen anzeigen</button>
       </div>
@@ -559,7 +611,8 @@
       taubheit: [38, 39, 40, 41],
       konzentration: [13, 14, 15, 27, 73, 94, 95],
       trauer: [47, 52, 53, 56, 72, 74, 111],
-      schlaf: [8, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86]
+      schlaf: [8, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86],
+      "60sekunden": [4, 11, 14, 87, 88, 94, 100, 105]
     };
 
     function unlockApp() {
@@ -646,14 +699,29 @@
       document.getElementById('codeInput').value = '';
     }
 
+    function toggleQuickMenu() {
+      const menu = document.getElementById('quickMenu');
+      if (menu.style.display === 'none' || menu.style.display === '') {
+        menu.style.display = 'flex';
+      } else {
+        menu.style.display = 'none';
+      }
+    }
+
     function filterByProblem(problem, button) {
       currentFilter = problem;
       filteredExercises = allExercises.filter(ex => problemMapping[problem].includes(ex.id));
 
       // Button-Styling
-      document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.quick-btn, .quick-btn-main, .quick-menu-item').forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
       document.getElementById('resetFilter').classList.add('show');
+
+      // Close quick menu after selection
+      const menu = document.getElementById('quickMenu');
+      if (menu && menu.style.display !== 'none') {
+        menu.style.display = 'none';
+      }
 
       renderFilteredExercises();
     }
@@ -661,7 +729,7 @@
     function resetFilter() {
       currentFilter = null;
       filteredExercises = [];
-      document.querySelectorAll('.quick-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.quick-btn, .quick-btn-main, .quick-menu-item').forEach(btn => btn.classList.remove('active'));
       document.getElementById('resetFilter').classList.remove('show');
       renderExercises();
     }
