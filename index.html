@@ -838,33 +838,40 @@
 
     // PWA: Install Prompt
     let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const btn = document.createElement('button');
-      btn.id = 'installBtn';
-      btn.textContent = '📱 Zur Startseite hinzufügen';
-      btn.style.cssText = 'width:100%; padding:12px 16px; background:#C5A55C; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; margin-top:1rem; transition:all 0.2s ease;';
-      btn.onmouseover = () => btn.style.background = '#B8949E';
-      btn.onmouseout = () => btn.style.background = '#C5A55C';
-      btn.onclick = async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const { outcome } = await deferredPrompt.userChoice;
-          if (outcome === 'accepted') {
-            deferredPrompt = null;
-            btn.style.display = 'none';
-          }
-        }
-      };
-      // Füge den Button zur unlock-section hinzu
+
+    // Button immer hinzufügen (versteckt zunächst)
+    window.addEventListener('DOMContentLoaded', () => {
       const unlockSection = document.querySelector('.unlock-section');
       if (unlockSection) {
+        const btn = document.createElement('button');
+        btn.id = 'installBtn';
+        btn.textContent = '📱 Zur Startseite hinzufügen';
+        btn.style.cssText = 'width:100%; padding:12px 16px; background:#C5A55C; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; margin-top:1rem; transition:all 0.2s ease; display:none;';
+        btn.onmouseover = () => btn.style.background = '#B8949E';
+        btn.onmouseout = () => btn.style.background = '#C5A55C';
+        btn.onclick = async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+              deferredPrompt = null;
+              btn.style.display = 'none';
+            }
+          }
+        };
         unlockSection.appendChild(btn);
       }
     });
 
-    // Auch bei bereits installierter App den Button verstecken
+    // Zeige Button wenn Install möglich ist
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'block';
+    });
+
+    // Verstecke Button wenn bereits installiert
     window.addEventListener('appinstalled', () => {
       const btn = document.getElementById('installBtn');
       if (btn) btn.style.display = 'none';
