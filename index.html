@@ -197,13 +197,41 @@
       transform: scale(1.1);
     }
 
+    #welcomeScreen {
+      background-image: url('/public/images/stones-bg.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+
+    #welcomeScreen::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.75);
+      z-index: 1;
+    }
+
     .unlock-section {
-      background: rgba(232, 240, 237, 0.5);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid #C7A2A8;
       border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 2rem;
+      padding: 2rem 1.5rem;
       text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 
     .unlock-input {
@@ -808,13 +836,37 @@
     }
 
     // PWA: Install Prompt
+    let deferredPrompt;
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
+      deferredPrompt = e;
       const btn = document.createElement('button');
+      btn.id = 'installBtn';
       btn.textContent = '📱 Zur Startseite hinzufügen';
-      btn.style.cssText = 'padding:10px 16px; background:#C5A55C; color:white; border:none; border-radius:6px; cursor:pointer; font-size:13px; margin:1rem 0;';
-      btn.onclick = () => e.prompt();
-      document.querySelector('.app-header').appendChild(btn);
+      btn.style.cssText = 'width:100%; padding:12px 16px; background:#C5A55C; color:white; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; margin-top:1rem; transition:all 0.2s ease;';
+      btn.onmouseover = () => btn.style.background = '#B8949E';
+      btn.onmouseout = () => btn.style.background = '#C5A55C';
+      btn.onclick = async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            deferredPrompt = null;
+            btn.style.display = 'none';
+          }
+        }
+      };
+      // Füge den Button zur unlock-section hinzu
+      const unlockSection = document.querySelector('.unlock-section');
+      if (unlockSection) {
+        unlockSection.appendChild(btn);
+      }
+    });
+
+    // Auch bei bereits installierter App den Button verstecken
+    window.addEventListener('appinstalled', () => {
+      const btn = document.getElementById('installBtn');
+      if (btn) btn.style.display = 'none';
     });
   </script>
 </body>
